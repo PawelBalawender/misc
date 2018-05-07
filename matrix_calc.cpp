@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #include <iostream>
 #include <typeinfo>
 #include <cassert>
@@ -981,4 +980,3 @@ int main() {
 	
 	return 0;
 }
->>>>>>> 7e848a66168af12ca3c636585b750e18a8604363
