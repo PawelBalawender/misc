@@ -345,6 +345,7 @@ vector< vector<double> > shrunk_matrix(vector <vector<double> > matrix, int colu
 	return shrunk;
 }
 
+
 vector< vector<double> > matrix_from_equations(vector<string> equations) {
 	vector< vector<double> > matrix;
 	
@@ -354,6 +355,18 @@ vector< vector<double> > matrix_from_equations(vector<string> equations) {
 	
 	return matrix;
 }
+
+/*
+EqMatrix matrix_from_equations(vector<string> equations) {
+	EqMatrix matrix;
+
+	for (int i = 0; i < equations.size(); i++) {
+		matrix.push_back(parse_equation(equations[i]));
+	}
+
+	return matrix;
+}
+*/
 
 vector< vector<double> > swap_with_results_column(vector< vector<double> > matrix, int col_num) {
 	vector< vector<double> > new_matrix;
@@ -370,6 +383,22 @@ vector< vector<double> > swap_with_results_column(vector< vector<double> > matri
 	return new_matrix;
 }
 
+/*
+EqMatrix swap_with_results_column(EqMatrix matrix, int col_num) {
+	EqMatrix new_matrix;
+	vector<double> row;
+	
+	for(int i = 0; i < matrix.size(); i++) {
+		row = matrix[i]; // copy row
+		row[col_num] = row.back();  // insert equation's result on to col_num
+		row.pop_back();  // discard equation result's column
+		
+		new_matrix.push_back(row);
+	}
+	
+	return new_matrix;
+}
+*/
 double matrix_determinant(vector< vector<double> > matrix) {
 	// Laplace expansion
 	int n = matrix.size();
@@ -386,6 +415,7 @@ double matrix_determinant(vector< vector<double> > matrix) {
 
 	return sum;
 }
+
 
 vector<double> get_results(vector< vector<double> > matrix) {
 	vector< vector<double> > temp_matrix;
@@ -419,7 +449,39 @@ vector<double> get_results(vector< vector<double> > matrix) {
 	return results;
 }
 
-
+/*
+vector<double> get_results(EqMatrix matrix) {
+	EqMatrix temp_matrix;
+	vector<double> row;
+	vector<double> partial_dets;
+	vector<double> results;
+	double general_det;
+	double res;
+	
+	// get general determinant
+	// pop the result's column from the original matrix
+	// todo: assigning should be nicer
+	temp_matrix.matrix = matrix.matrix;
+	// todo: del_col(-1) should automatically get the last col
+	temp_matrix.del_col(temp_matrix.matrix.size() - 1);
+	general_det = temp_matrix.get_det();
+		
+	// iterate and determine "smaller" determinants
+	for (int i = 0; i < temp_matrix.matrix.size(); i++) {
+		temp_matrix.matrix = matrix.matrix;
+		temp_matrix.del_row(0);
+		temp_matrix.del_col(i);
+		partial_dets.push_back(temp_matrix.get_det());
+	}
+	
+	for (int i = 0; i < partial_dets.size(); i++) {
+		res = partial_dets[i] / general_det;
+		results.push_back(res);
+	}
+	
+	return results;
+}
+*/
 bool test_split() {
 	string str, delim;
 	vector<string> ok;
@@ -582,6 +644,7 @@ bool test_swap_with_results_column() {
 	return res;
 }
 
+
 bool test_get_results() {
 	vector< vector<double> > matrix;
 	vector<double> ok;
@@ -609,8 +672,38 @@ bool test_get_results() {
 	return res;
 }
 
+/*
+bool test_get_results() {
+	EqMatrix matrix;
+	vector<double> ok;
+	bool a, b, res;
+	
+	matrix = EqMatrix({
+		{2, 1, 3}, // 2x + y = 3
+		{2, -1, 5} // 2x - y = 5, so 2y = -2, y = -1, x = 2
+	});
+	ok = {2, -1};
+	a = (ok == get_results(matrix));
+	
+	matrix = EqMatrix({
+		{2, 1, -3, 6, 2},  // 2a + b - 3c + 6d = 2
+		{1, 6, -2, -1, 3},  // a + 6b - 2c - d = 3
+		{7, 8, 1, -4, -1}, // 7a + 8b + c - 4d = -1
+		{-1, 5, -2, -8, 1} // -a + 5b - 2c - 8d = 1
+	});
+	// determinant (without last column (the results column)): -1034
+	// a = -5/8, b=5/8, c =-1/8, d=3/8
+	ok = {-0.625, 0.625, -0.125, 0.375};
+	b = (ok == get_results(matrix));
+
+	res = a && b;
+	return res;
+}
+*/
+
 int main() {
 	vector< vector<double> > matrix;
+	// EqMatrix matrix;
 	vector<string> equations;
 	vector<double> results;
 	string user_input;
