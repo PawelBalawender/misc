@@ -20,7 +20,6 @@
 
 using namespace std;
 
-
 // from documentation:
 // http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon
 template<class T>
@@ -31,6 +30,215 @@ typename std::enable_if<!std::numeric_limits<T>::is_integer, bool>::type
     return std::abs(x-y) <= std::numeric_limits<T>::epsilon() * std::abs(x+y) * ulp
     // unless the result is subnormal
            || std::abs(x-y) < std::numeric_limits<T>::min();
+}
+
+class EqMatrix {
+	public:
+		vector< vector<double> > matrix;
+		
+		EqMatrix(void) {}
+
+		EqMatrix(vector< vector<double> > mtrx) {
+			matrix = mtrx;
+		}
+
+		bool operator==(EqMatrix operand) {
+			return matrix == operand.matrix;
+		}
+
+
+		void add_row(vector<double> row) {
+			matrix.push_back(row);
+		}
+
+		void del_row(int row_num) {
+			matrix.erase(matrix.begin() + row_num);
+		}
+
+		void del_col(int col_num) {
+			for(int i = 0; i < matrix.size(); i++) {
+				matrix[i].erase(matrix[i].begin() + col_num);
+			}
+		}
+
+		double get_det() {
+			// Laplace expansion
+			int n = matrix.size();
+	
+			if (n == 1) {return matrix[0][0];}
+	
+			double sum = 0.0;
+			for (int i = 0; i < n; i++) {
+				EqMatrix smaller_matrix (matrix);
+				smaller_matrix.del_row(0);
+				smaller_matrix.del_col(i);
+		
+				sum += pow(-1, i) * matrix[0][i] * smaller_matrix.get_det();
+			}
+
+			return sum;
+		}
+};
+
+bool test_EqMatrix_init() {
+	EqMatrix data_m;
+	vector< vector<double> > data_v, matrix, ok;
+	bool a, b, res;
+
+	// test: init without arguments
+	matrix = EqMatrix().matrix;
+	ok = {};
+	a = (ok == matrix);
+
+	// test: init with raw matrix as argument
+	data_v = {
+		{1.1, -2.7, 3},
+		{-3.1, 2, 1.9},
+		{0, 1.0, -1.7},
+	};
+	matrix = EqMatrix(data_v).matrix;
+	ok = data_v;
+	b = (ok == matrix);
+
+	res = a && b;
+	return res;
+}
+
+bool test_EqMatrix_add_row() {
+	EqMatrix matrix, ok;
+	vector<double> row;
+	bool a, b, c, res;
+	
+	matrix = EqMatrix();
+	row = {1, 2, 3};
+	matrix.add_row(row);
+	ok = EqMatrix({{1, 2, 3}});
+	a = (ok == matrix);
+
+	matrix = EqMatrix({{1, 2, 3}});
+	row = {3, 2, 1};
+	matrix.add_row(row);
+	ok = EqMatrix({{1, 2, 3}, {3, 2, 1}});
+	b = (ok == matrix);
+
+	matrix = EqMatrix({{0, 1}});
+	row = {3, 2, 1};
+	matrix.add_row(row);
+	ok = EqMatrix({{0, 1}, {3, 2, 1}});
+	c = (ok == matrix);
+
+	res = a && b && c;
+	return res;
+}
+
+bool test_EqMatrix_del_row() {
+	EqMatrix matrix, ok;
+	bool a, b, res;
+
+	matrix = EqMatrix({{1, 2, 3}, {3, 2, 1}});
+	matrix.del_row(1);
+	ok = EqMatrix({{1, 2, 3}});
+	a = (ok == matrix);
+
+	matrix = EqMatrix({{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}});
+	matrix.del_row(0);
+	ok = EqMatrix({{5, 6, 7, 8}, {9, 10, 11, 12}});
+	b = (ok == matrix);
+	
+	res = a && b;
+	return res;
+}
+
+bool test_EqMatrix_del_col() {
+	EqMatrix matrix, ok;
+	bool a, b, c, res;
+	
+	/*
+	matrix = EqMatrix({{1}});
+	matrix.del_col(0);
+	ok = EqMatrix();
+	a = (ok == matrix);
+	*/
+
+	matrix = EqMatrix({{1, 2}, {3, 4}});
+	matrix.del_col(0);
+	ok = EqMatrix({{2}, {4}});
+	b = (ok == matrix);
+	
+	matrix = EqMatrix({{1, 2, 3, 4, 5}, {5, 4, 3, 2, 1}, {6, 7, 8, 9, 10}});
+	matrix.del_col(3);
+	ok = EqMatrix({{1, 2, 3, 5}, {5, 4, 3, 1}, {6, 7, 8, 10}});
+	c = (ok == matrix);
+
+	res = a && b && c;
+	return res;
+}
+
+bool test_EqMatrix_get_det() {
+	EqMatrix matrix;
+	double ok;
+	bool a, b, c, d, e, f, res;
+	
+	matrix = EqMatrix((vector< vector<double> >){{1.0, }, });
+	ok = 1.0;
+	a = almost_equal(ok, matrix.get_det(), 1);
+	
+	matrix = EqMatrix({
+		{1.1, 2.2},
+		{3.3, 5.5}
+	});
+	ok = -1.21;
+	b = almost_equal(ok, matrix.get_det(), 1);
+	
+	matrix = EqMatrix({
+		{1.0, 2.0, 3.0},
+		{3.0, 1.0, 2.0},
+		{2.0, 3.0, 1.0}
+	});
+	ok = 18.0;
+	c = almost_equal(ok, matrix.get_det(), 1);
+	
+	matrix = EqMatrix({
+		{0.0, 1.9, 2.2},
+		{0.0, 9.1, 2.2},
+		{0.0, 7.1, 3.3}
+	});
+	ok = 0.0;
+	d = almost_equal(ok, matrix.get_det(), 1);
+	
+	matrix = EqMatrix({
+		{1.0, 2.0, 3.0, 4.0, 5.0},
+		{5.0, 1.0, 2.0, 3.0, 4.0},
+		{4.0, 5.0, 1.0, 2.0, 3.0},
+		{3.0, 4.0, 5.0, 1.0, 2.0},
+		{2.0, 3.0, 4.0, 5.0, 1.0}
+	});
+	ok = 1875.0;
+	e = almost_equal(ok, matrix.get_det(), 1);
+	
+	matrix = EqMatrix({
+		{2, 1, -3, 6},
+		{1, 6, -2, -1},
+		{7, 8, 1, -4},
+		{1, 5, -2, -8}
+	});
+	ok = -1034;
+	f = almost_equal(ok, matrix.get_det(), 1);
+
+	res = a && b && c && d && e && f;
+	return res;
+}
+
+bool test_EqMatrix() {
+	bool a, b, c, d, e, res;
+	a = test_EqMatrix_init();
+	b = test_EqMatrix_add_row();
+	c = test_EqMatrix_del_row();
+	d = test_EqMatrix_del_col();
+	e = test_EqMatrix_get_det();
+
+	res = a && b && c && d && e;
+	return res;
 }
 
 vector<string> split(string txt, string delimiters) {
@@ -137,23 +345,6 @@ vector< vector<double> > shrunk_matrix(vector <vector<double> > matrix, int colu
 	return shrunk;
 }
 
-double matrix_determinant(vector< vector<double> > matrix) {
-	// Laplace expansion
-	int i;
-	int n = matrix.size();
-	
-	if (n == 1) {return matrix[0][0];}
-	
-	double sum = 0.0;
-	for (i = 0; i < n; i++) {
-		vector< vector<double> > shrunk;
-		shrunk = shrunk_matrix(matrix, i);
-		
-		sum += pow(-1, i) * matrix[0][i] * matrix_determinant(shrunk);
-	}
-	return sum;
-}
-
 vector< vector<double> > matrix_from_equations(vector<string> equations) {
 	vector< vector<double> > matrix;
 	
@@ -177,6 +368,23 @@ vector< vector<double> > swap_with_results_column(vector< vector<double> > matri
 	}
 	
 	return new_matrix;
+}
+
+double matrix_determinant(vector< vector<double> > matrix) {
+	// Laplace expansion
+	int n = matrix.size();
+
+	if (n == 1) {return matrix[0][0];}
+	
+	double sum = 0.0;
+	for (int i = 0; i < n; i++) {
+		vector< vector<double> > smaller_matrix;
+		smaller_matrix = shrunk_matrix(matrix, i);
+		
+		sum += pow(-1, i) * matrix[0][i] * matrix_determinant(smaller_matrix);
+	}
+
+	return sum;
 }
 
 vector<double> get_results(vector< vector<double> > matrix) {
@@ -300,61 +508,6 @@ bool test_shrunk_matrix() {
 	return res;
 }
 
-bool test_matrix_determinant() {
-	vector< vector<double> > matrix;
-	double ok;
-	bool a, b, c, d, e, f, res;
-	
-	matrix = {{1.0}};
-	ok = 1.0;
-	a = almost_equal(ok, matrix_determinant(matrix), 1);
-	
-	matrix = {
-		{1.1, 2.2},
-		{3.3, 5.5}
-	};
-	ok = -1.21;
-	b = almost_equal(ok, matrix_determinant(matrix), 1);
-	
-	matrix = {
-		{1.0, 2.0, 3.0},
-		{3.0, 1.0, 2.0},
-		{2.0, 3.0, 1.0}
-	};
-	ok = 18.0;
-	c = almost_equal(ok, matrix_determinant(matrix), 1);
-	
-	matrix = {
-		{0.0, 1.9, 2.2},
-		{0.0, 9.1, 2.2},
-		{0.0, 7.1, 3.3}
-	};
-	ok = 0.0;
-	d = almost_equal(ok, matrix_determinant(matrix), 1);
-	
-	matrix = {
-		{1.0, 2.0, 3.0, 4.0, 5.0},
-		{5.0, 1.0, 2.0, 3.0, 4.0},
-		{4.0, 5.0, 1.0, 2.0, 3.0},
-		{3.0, 4.0, 5.0, 1.0, 2.0},
-		{2.0, 3.0, 4.0, 5.0, 1.0}
-	};
-	ok = 1875.0;
-	e = almost_equal(ok, matrix_determinant(matrix), 1);
-	
-	matrix = {
-		{2, 1, -3, 6},
-		{1, 6, -2, -1},
-		{7, 8, 1, -4},
-		{1, 5, -2, -8}
-	};
-	ok = -1034;
-	f = almost_equal(ok, matrix_determinant(matrix), 1);
-
-	res = a && b && c && d && e && f;
-	return res;
-}
-
 bool test_matrix_from_equations() {
 	vector<string> equations;
 	vector< vector<double> > ok;
@@ -464,10 +617,10 @@ int main() {
 	int number_of_equations;
 	
 	// run tests
+	assert(test_EqMatrix());
 	assert(test_split());
 	assert(test_parse_equation());
 	assert(test_shrunk_matrix());
-	assert(test_matrix_determinant());
 	assert(test_matrix_from_equations());
 	assert(test_swap_with_results_column());
 	assert(test_get_results());
