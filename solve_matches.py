@@ -49,7 +49,7 @@ prices = {i: get_matches_count(digits[i]) for i in range(10)}
 prices.update({'+': 2, '-': 1, '=': 2})
 close_digits = get_close_digits()
 
-raw_eq = input()
+raw_eq = input('> ')
 assert len(raw_eq) == 5
 eq_numbs = list(map(int, raw_eq[::2]))  # cannot be generator, it's used a few times
 eq_signs = raw_eq[1::2]
