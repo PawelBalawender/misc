@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 """
 under construction!
@@ -6,14 +6,12 @@ under construction!
 This module implements the snake game
 """
 class Board: pass
-
 class GameObject:
     def __init__(self, board: Board, char: str, fields: list):
         self.board = board
         self.char = char
         self.fields = fields        
         self.board.add_obj(self)
-
 class Board:
     def __init__(self, l=10, h=10):
         self.length = l
@@ -26,13 +24,14 @@ class Board:
 
     def rm_obj(self, obj: GameObject):
         for field in self.objects[obj]:
-            self.fields[field[0]][field[1]] = 0
+            self.fields[field[1]][field[0]] = 0
+        del self.objects[obj]
 
     def add_obj(self, obj: GameObject):
         self.objects[obj] = obj.fields
         c = obj.char
         for field in obj.fields:
-            self.fields[field[0]][field[1]] = c
+            self.fields[field[1]][field[0]] = c
 
     def update(self, obj: GameObject) -> bool:
         self.rm_obj(obj)
@@ -77,29 +76,41 @@ class Snake(GameObject):
         self.board.update(self)
         return True
 
-
 class TestBoard:
-    def __init__(self):
-        pass
+    def run():
+        TestBoard.test_add_rm_obj()
 
+    def test_add_rm_obj():
+        b = Board()
+        o = GameObject(b, 'o', [(0, 0), (1, 0), (1, 1), (2, 1)])
+        b.add_obj(o)
+
+        # test: add_obj
+        assert b.objects == {o: o.fields}
+        x = b.fields
+        f = x[0][0] + x[0][1] + x[1][1] + x[1][2]
+        assert f == 'oooo'
+        assert sum(i.count('o') for i in b.fields) == 4
+
+        # test: rm_obj
+        b.rm_obj(o)
+        assert b.objects == dict()
+        assert b.fields == [[0 for _ in range(10)] for i in range(10)]
 
 class TestSnake:
-    def __init__(self):
-        pass
+    def run():
+        TestSnake.test_init()
+        TestSnake.test_check_collision()
+        TestSnake.test_move()
 
-    def run(self):
-        self.test_init()
-        self.test_check_collision()
-        self.test_move()
-
-    def test_init(self):
+    def test_init():
         snake = Snake(Board())
         assert snake.head == (0, 0)
         assert snake.body == [snake.head]
         assert snake.speed == 1
         assert snake.orientation == 0
 
-    def test_check_collision(self):
+    def test_check_collision():
         snake = Snake(Board())
 
         snake.head = (0, 0)
@@ -134,7 +145,7 @@ class TestSnake:
         snake.board.update(snake)
         assert not snake.collision()
 
-    def test_move(self):
+    def test_move():
         snake = Snake(Board())
         # snake body: [head] = [(0, 0)]
         # snake orient: 0
@@ -161,12 +172,11 @@ class TestSnake:
         assert snake.head == (6, 4)
         assert snake.body == [(i[0]+1, i[1]) for i in body]
 
-
 def main():
     pass
 
-
 if __name__ == '__main__':
-    TestSnake().run()
+    TestSnake.run()
+    TestBoard.run()
     main()
 
