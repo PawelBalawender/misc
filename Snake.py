@@ -8,6 +8,10 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 """
 This module implements the snake game
+
+under construction!
+todo:
+    add food
 """
 
 
@@ -78,11 +82,16 @@ class Board:
 
 class Snake(GameObject):
     def __init__(self, board: Board, callback):
-        self.body = [(5, 5), (4, 5)]  # only the head
+        self.fields = [(5, 5), (4, 5)]  # only the head
         self.orientation = 0  # 0, 1, 2, 3 == N, E, W, S
         self.speed = 1  # how many fields it moves in 1 turn
         self.callback = callback
-        super().__init__(board, 'S', self.body)
+
+        self.patches = []
+        for field in self.fields:
+            patch = patches.Rectangle(field, 1, 1, fc='g')
+            self.patches.append(patch)
+        super().__init__(board, 'S', self.fields)
 
     def new_field(self) -> tuple:
         """
@@ -126,6 +135,11 @@ class Snake(GameObject):
             self.kill()
             return False
         self.fields = self.fields[1:] + [new]  # the actual movement
+        # the tail becomes the head - no need to refresh every patch
+        self.patches[0].set_xy(new)
+        # swap tail with head; this step is very important; otherwise
+        # the snake will split
+        self.patches[0], self.patches[-1] = self.patches[-1], self.patches[0]
         self.board.update(self)
         return True
 
@@ -148,8 +162,9 @@ if __name__ == '__main__':
     ax.set_xticks([i for i in range(b.length)])
     ax.set_yticks([i for i in range(b.height)])
 
-    patch = patches.Rectangle(s.fields[-1], 1, 1, fc='g')
-    ax.add_patch(patch)
+    # patch = patches.Rectangle(s.fields[-1], 1, 1, fc='g')
+    for patch in s.patches:
+        ax.add_patch(patch)
     fig.canvas.draw()
 
     def uncond():
@@ -165,7 +180,7 @@ if __name__ == '__main__':
 
     while is_alive.is_set():
         s.move()
-        patch.set_xy(s.fields[-1])
+        # patch.set_xy(s.fields[-1])
         fig.canvas.draw()
         time.sleep(1)
 
