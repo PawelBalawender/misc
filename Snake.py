@@ -9,16 +9,21 @@ import matplotlib.patches as patches
 """
 under construction!
 This module implements the snake game
-
-todo: get rid of head
 """
+
+
+# just a declaration for type annotations
 class Board: pass
+
+
 class GameObject:
     def __init__(self, board: Board, char: str, fields: list):
         self.board = board
         self.char = char
         self.fields = fields        
         self.board.add_obj(self)
+
+
 class Board:
     def __init__(self, l=10, h=10):
         self.length = l
@@ -44,52 +49,48 @@ class Board:
         self.rm_obj(obj)
         self.add_obj(obj)
 
+    def can_move(self, x: int, y: int) -> bool:
+        res = (0 <= x < 10) & (0 <= y < 10)  # isn't it beyond the board?
+        res &= self.fields[y][x] == 0  # is it empty?
+        return res
+
     def print_asc(self):
-        print('+' + ' - '*10 + '+')
+        border = '+' + ' - '*self.l + '+'
+        print(border)
         for i in self.fields:
             for j in i:
                 print(j, end=' ')
             print()
-        print('+' + ' - '*10 + '+')
+        print(border)
+
 
 class Snake(GameObject):
     def __init__(self, board):
-        self.body = [(0, 0)]
+        self.body = [(0, 0)]  # only the head
         self.orientation = 0  # 0, 1, 2, 3 == N, E, W, S
-        self.speed = 1
+        self.speed = 1  # how many fields it moves in 1 turn
         self.is_alive = True
         super().__init__(board, 'S', self.body)
 
     def set_orientation(self, orient):
-        if not 0 <= orient < 4:
+        if not 0 <= orient < 4:  # no such an orientation
             raise ValueError
         
-        if not abs(self.orientation - orient):
+        if not abs(self.orientation - orient):  # cant turn 180 degrees
             return False
 
         self.orientation = orient
         return True
 
+    # todo: move it to the Border cls
     def collision(self) -> bool:
-        d, x, y = self.orientation, self.fields[-1][0], self.fields[-1][1]
-        l, h = self.board.length, self.board.height
+        head_x, head_y = self.fields[-1]
+        dx, dy = [(0, 1), (1, 0), (0, -1), (-1, 0)][self.orientation]
+        new_x, new_y = head_x + dx, head_y + dy
 
-        # check collision with board's boundaries
-        if d == 0:
-            next_field = (x, y + 1)
-            if y == h - 1: return True
-        if d == 1:
-            next_field = (x + 1, y)
-            if x == l - 1: return True
-        if d == 2:
-            next_field = (x, y - 1)
-            if y == 0: return True
-        if d == 3:
-            next_field = (x - 1, y)
-            if x == 0: return True
-
-        if self.board[next_field] != 0: return True
-        return False
+        res = 0 <= new_x < 10 & 0 <= new_y < 10  # isn't it beyond the board?
+        res &= self.board.fields[new_y][new_x] == 0  # is it empty?
+        return res
 
     def kill(self):
         print('Looser!')
@@ -97,7 +98,13 @@ class Snake(GameObject):
 
     def move(self) -> bool:
         # if orient != -1: self.set_orientation(orient)
-        if self.collision():
+        #if self.collision():
+        
+        head_x, head_y = self.fields[-1]
+        dx, dy = [(0, 1), (1, 0), (0, -1), (-1, 0)][self.orientation]
+        new_x, new_y = head_x + dx, head_y + dy
+        print(new_x, new_y, self.board.fields[new_y][new_x])
+        if not self.board.can_move(new_x, new_y):
             self.kill()
             return False
         vector = [(0, 1), (1, 0), (0, -1), (-1, 0)][self.orientation]
