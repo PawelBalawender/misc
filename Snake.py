@@ -49,7 +49,8 @@ class Board:
         self.rm_obj(obj)
         self.add_obj(obj)
 
-    def can_move(self, x: int, y: int) -> bool:
+    def can_move(self, field: tuple) -> bool:
+        x, y = field
         res = (0 <= x < 10) & (0 <= y < 10)  # isn't it beyond the board?
         res &= self.fields[y][x] == 0  # is it empty?
         return res
@@ -72,6 +73,13 @@ class Snake(GameObject):
         self.is_alive = True
         super().__init__(board, 'S', self.body)
 
+    def new_field(self):
+        head_x, head_y = self.fields[-1]
+        dx, dy = [(0, 1), (1, 0), (0, -1), (-1, 0)][self.orientation]
+        dx *= self.speed
+        dy *= self.speed
+        return head_x + dx, head_y + dy
+
     def set_orientation(self, orient):
         if not 0 <= orient < 4:  # no such an orientation
             raise ValueError
@@ -82,6 +90,7 @@ class Snake(GameObject):
         self.orientation = orient
         return True
 
+"""
     # todo: move it to the Border cls
     def collision(self) -> bool:
         head_x, head_y = self.fields[-1]
@@ -91,27 +100,24 @@ class Snake(GameObject):
         res = 0 <= new_x < 10 & 0 <= new_y < 10  # isn't it beyond the board?
         res &= self.board.fields[new_y][new_x] == 0  # is it empty?
         return res
-
+"""
     def kill(self):
         print('Looser!')
         self.is_alive = False
 
     def move(self) -> bool:
-        # if orient != -1: self.set_orientation(orient)
-        #if self.collision():
-        
-        head_x, head_y = self.fields[-1]
-        dx, dy = [(0, 1), (1, 0), (0, -1), (-1, 0)][self.orientation]
-        new_x, new_y = head_x + dx, head_y + dy
-        print(new_x, new_y, self.board.fields[new_y][new_x])
-        if not self.board.can_move(new_x, new_y):
+        # calculate the new pos of the head; the tail will be lost
+        # head_x, head_y = self.fields[-1]
+        # dx, dy = [(0, 1), (1, 0), (0, -1), (-1, 0)][self.orientation]
+        # dx *= self.speed
+        # dy *= self.speed
+        # new_x, new_y = head_x + dx, head_y + dy
+        new = self.new_field()
+        if not self.board.can_move(new):# new_x, new_y):
             self.kill()
             return False
-        vector = [(0, 1), (1, 0), (0, -1), (-1, 0)][self.orientation]
-        vector = vector[0] * self.speed, vector[1] * self.speed
-        head = self.fields[-1]
-        head = head[0] + vector[0], head[1] + vector[1]
-        self.fields = self.fields[1:] + [head]
+
+        self.fields = self.fields[1:] + [new]#(new_x, new_y)]
         self.board.update(self)
         return True
 
