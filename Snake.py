@@ -1,9 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
+import threading
+import time
+import sys
+
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 """
 under construction!
-
 This module implements the snake game
+
+todo: get rid of head
 """
 class Board: pass
 class GameObject:
@@ -37,16 +44,34 @@ class Board:
         self.rm_obj(obj)
         self.add_obj(obj)
 
+    def print_asc(self):
+        print('+' + ' - '*10 + '+')
+        for i in self.fields:
+            for j in i:
+                print(j, end=' ')
+            print()
+        print('+' + ' - '*10 + '+')
+
 class Snake(GameObject):
     def __init__(self, board):
-        self.head = 0, 0
-        self.body = [self.head]
+        self.body = [(0, 0)]
         self.orientation = 0  # 0, 1, 2, 3 == N, E, W, S
         self.speed = 1
+        self.is_alive = True
         super().__init__(board, 'S', self.body)
 
+    def set_orientation(self, orient):
+        if not 0 <= orient < 4:
+            raise ValueError
+        
+        if not abs(self.orientation - orient):
+            return False
+
+        self.orientation = orient
+        return True
+
     def collision(self) -> bool:
-        d, x, y = self.orientation, self.head[0], self.head[1]
+        d, x, y = self.orientation, self.fields[-1][0], self.fields[-1][1]
         l, h = self.board.length, self.board.height
 
         # check collision with board's boundaries
@@ -66,13 +91,20 @@ class Snake(GameObject):
         if self.board[next_field] != 0: return True
         return False
 
-    def move(self, direction=0) -> bool:
-        if self.collision(): return False
-        self.orientation = direction
-        vector = [(0, 1), (1, 0), (0, -1), (-1, 0)][direction]
+    def kill(self):
+        print('Looser!')
+        self.is_alive = False
+
+    def move(self) -> bool:
+        # if orient != -1: self.set_orientation(orient)
+        if self.collision():
+            self.kill()
+            return False
+        vector = [(0, 1), (1, 0), (0, -1), (-1, 0)][self.orientation]
         vector = vector[0] * self.speed, vector[1] * self.speed
-        self.body = [(i[0] + vector[0], i[1] + vector[1]) for i in self.body]
-        self.head = self.head[0] + vector[0], self.head[1] + vector[1]
+        head = self.fields[-1]
+        head = head[0] + vector[0], head[1] + vector[1]
+        self.fields = self.fields[1:] + [head]
         self.board.update(self)
         return True
 
@@ -172,11 +204,37 @@ class TestSnake:
         assert snake.head == (6, 4)
         assert snake.body == [(i[0]+1, i[1]) for i in body]
 
-def main():
-    pass
-
 if __name__ == '__main__':
-    TestSnake.run()
-    TestBoard.run()
-    main()
+    # TestSnake.run()
+    # TestBoard.run()
+    
+    plt.ion()
+    fig, ax = plt.subplots()
+    ax.set_xlim([0, 10])
+    ax.set_ylim([0, 10])
+    ax.set_xticks([i for i in range(10)])
+    ax.set_yticks([i for i in range(10)])
 
+    b = Board()
+    s = Snake(b)
+
+    patch = patches.Rectangle(s.fields[-1], 1, 1, fc='g')
+    ax.add_patch(patch)
+    fig.canvas.draw()
+
+    def uncond():
+        while s.is_alive:
+            s.set_orientation(int(input()))
+
+    t2 = threading.Thread(target=uncond)
+    t2.start()
+
+    while s.is_alive:
+        print(s.fields[-1])
+        s.move()
+        patch.set_xy(s.fields[-1])
+        fig.canvas.draw()
+        time.sleep(1)
+    
+    plt.show()
+    t2.join()
