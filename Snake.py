@@ -77,11 +77,11 @@ class Board:
 
 
 class Snake(GameObject):
-    def __init__(self, board: Board):
-        self.body = [(5, 5)]  # only the head
+    def __init__(self, board: Board, callback):
+        self.body = [(5, 5), (4, 5)]  # only the head
         self.orientation = 0  # 0, 1, 2, 3 == N, E, W, S
         self.speed = 1  # how many fields it moves in 1 turn
-        self.is_alive = True
+        self.callback = callback
         super().__init__(board, 'S', self.body)
 
     def new_field(self) -> tuple:
@@ -113,8 +113,7 @@ class Snake(GameObject):
         """
         Game over
         """
-        print('Looser!')
-        self.is_alive = False
+        self.callback(self)
 
     def move(self) -> bool:
         """
@@ -133,8 +132,16 @@ class Snake(GameObject):
 if __name__ == '__main__':
     plt.ion()
     fig, ax = plt.subplots()
+
+    is_alive = threading.Event()
+    is_alive.set()
+
+    def foo(s: Snake):
+        print('Looser!')
+        is_alive.clear()
+
     b = Board()
-    s = Snake(b)
+    s = Snake(b, foo)
 
     ax.set_xlim([0, b.length])
     ax.set_ylim([0, b.height])
@@ -146,18 +153,22 @@ if __name__ == '__main__':
     fig.canvas.draw()
 
     def uncond():
-        while s.is_alive:
-            s.set_orientation(int(input()))
+        while is_alive.is_set():
+            inp = input()
+            # is_alive could change;
+            # if user has just hit the enter, int(inp) would be an error
+            if not is_alive.is_set(): return
+            s.set_orientation(int(inp))
 
     t2 = threading.Thread(target=uncond)
     t2.start()
 
-    while s.is_alive:
-        print(s.fields[-1])
+    while is_alive.is_set():
         s.move()
         patch.set_xy(s.fields[-1])
         fig.canvas.draw()
         time.sleep(1)
-    
-    plt.show()
+
+    print('Press any button to quit')
     t2.join()
+
