@@ -35,7 +35,7 @@ class GameObject:
 
 
 class Board:
-    def __init__(self, fig, ax, l=11, h=11):
+    def __init__(self, fig, ax, l=21, h=21):
         self.fig = fig
         self.ax = ax
         self.length = l
@@ -133,10 +133,6 @@ class Snake(GameObject):
                 'F': self.feed,
                 }
 
-        # self.patches = []
-        # for field in self.fields:
-            # patch = patches.Rectangle(field, 1, 1, fc='g')
-            # self.patches.append(patch)
         super().__init__(board, 'S', 'r', self.fields)
 
     def new_field(self) -> tuple:
@@ -176,10 +172,14 @@ class Snake(GameObject):
             self.actions[i]()
 
     def feed(self):
-        # inverted vector from new_field(); we add new block to the tail
-        dx, dy = [(0, -1), (-1, 0), (0, 1), (1, 0)][self.orientation]
-        tail = self.fields[0][0] + dx, self.fields[0][1] + dy
-        self.fields = [tail] + self.fields
+        # find in which direction is the tail is going and get the field behind
+        # diff betwen pre-tail and tail gotta be same as tail and post-tail
+        tail_x, tail_y = self.fields[0]
+        pretail_x, pretail_y = self.fields[1]
+        dx, dy = pretail_x - tail_x, pretail_y - tail_y
+        
+        post_tail = self.fields[0][0] + dx, self.fields[0][1] + dy
+        self.fields = [post_tail] + self.fields
         self.board.rm_food(self.fields[-1])
         self.board.update(self)
 
@@ -220,9 +220,9 @@ if __name__ == '__main__':
         print('Looser!')
         is_alive.clear()
 
-    b = Board(fig, ax)
+    b = Board(fig, ax, 11, 11)
     s = Snake(b, foo)
-    f = Food(b, (3, 3))
+    f = Food(b, (10, 10))
 
     ax.set_xlim([0, b.length])
     ax.set_ylim([0, b.height])
