@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 import threading
+import random
 import time
 import sys
 
@@ -72,10 +73,21 @@ class Board:
             self.ax.add_patch(patch)
         self.objects[obj] = [obj.fields, _patches]
 
+    def spawn_food(self):
+        free = []
+        for y, row in enumerate(self.fields):
+            for x, f in enumerate(row):
+                if f == self.EMPTY:
+                    free.append((x, y))
+
+        field = random.choice(free)
+        f = Food(self, field)
+
     def rm_food(self, field: tuple):
         objs = [k for (k, v) in self.objects.items() if field in v[0]]
         for obj in objs:
             self.rm_obj(obj)
+            self.spawn_food()
         
     def update(self, obj: GameObject):
         """Remove depreciated object and locate the fresh one"""
@@ -107,7 +119,10 @@ class Snake(GameObject):
     def __init__(self, board: Board, callback):
         self.fields = [(2, 5),
                 (3, 5),
-                (4, 5)]
+                (4, 5),
+                (5, 5),
+                (6, 5),
+                (7, 5)]
         self.orientation = 0  # 0, 1, 2, 3 == N, E, W, S
         self.speed = 1  # how many fields it moves in 1 turn
         self.callback = callback
@@ -228,7 +243,8 @@ if __name__ == '__main__':
             try:
                 s.set_orientation(int(inp))
             except ValueError:
-                if not inp: return
+                continue
+
 
     t2 = threading.Thread(target=uncond)
     t2.start()
@@ -237,7 +253,7 @@ if __name__ == '__main__':
         s.move()
         # patch.set_xy(s.fields[-1])
         fig.canvas.draw()
-        time.sleep(0.2)
+        time.sleep(0.1)
 
     print('Press any button to quit')
     t2.join()
