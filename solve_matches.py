@@ -1,6 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
+"""
+this module takes as an input a match-equation:
+---|     ---|     +--+
+   |        |     |  |
+---|  +  ---|  =  +--+
+   |        |        | 
+---|     ---|     ---+
+
+and returns every different equation that can
+be created from it by swapping a few matches
+"""
+
 digits = [
         0b1111111 & 0b1110111,  # 0; every but 3
         1<<2 | 1<<5,  # 1; only 2 and 5
@@ -89,5 +101,6 @@ for i in possibilities[0]:
                 # can do nothing with signs
                 if eq_signs[0] == '+' and i + j == k: ok += [f'{i}+{j}={k}']
                 elif eq_signs[0] == '-' and i - j == k: ok += [f'{i}i{j}={k}']
+
 print(ok)
 

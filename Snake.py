@@ -9,10 +9,6 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 """
 This module implements the snake game
-
-under construction!
-todo:
-    making patches in Board
 """
 
 
@@ -209,9 +205,16 @@ class Food(GameObject):
     def __init__(self, board: Board, pos: tuple):
         super().__init__(board, 'F', 'g', [pos])
 
+
+def onkey(event):
+    sys.exit()
+    print(event.key())
+
 if __name__ == '__main__':
     plt.ion()
     fig, ax = plt.subplots()
+
+    cid = fig.canvas.mpl_connect('button_pressed_event', onkey)
 
     is_alive = threading.Event()
     is_alive.set()
@@ -253,7 +256,7 @@ if __name__ == '__main__':
         s.move()
         # patch.set_xy(s.fields[-1])
         fig.canvas.draw()
-        time.sleep(0.1)
+        time.sleep(3)
 
     print('Press any button to quit')
     t2.join()
