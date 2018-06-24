@@ -1,297 +1,263 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
-"""
-under construction!
+import threading
+import random
+import time
+import sys
 
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+"""
 This module implements the snake game
 """
 
-class Board(object):
-    def __init__(self, l=10, h=10):
+
+# just a declaration for type annotations
+class Board: pass
+
+
+class GameObject:
+    def __init__(
+            self,
+            board: Board,
+            char: str,
+            color: str,
+            fields: list):
+        self.board = board
+        self.char = char
+        self.color = color
+        self.fields = fields        
+        self.board.add_obj(self)
+
+
+class Board:
+    def __init__(self, fig, ax, l=21, h=21):
+        self.fig = fig
+        self.ax = ax
         self.length = l
         self.height = h
         self.fields = [[0 for _ in range(l)] for _ in range(h)]
+        # BoardObject: Tuple[List[tuple[int]], List[patches.Rectangle]]
+        self.objects = dict()
 
-    def __getitem__(self, pos):
-        return self.fields[pos[1]][pos[0]]
+        self.EMPTY = 0  # it indicates an empty field in the array
+
+    def rm_obj(self, obj: GameObject):
+        """
+        Find the fields that the given object has occupied on the board,
+        clear them and then 'check out' the object from the board
+        """
+        # iterate over transposed version ([flds], [ptchs] -> [f0, p0...])
+        for field, patch in zip(*self.objects[obj]):
+            x, y = field
+            self.fields[y][x] = self.EMPTY
+            patch.set_visible(False)
+        del self.objects[obj]
+
+    def add_obj(self, obj: GameObject):
+        """
+        'Check in' the given object and place its chars on the board
+        """
+        c = obj.char
+        col = obj.color
+
+        _patches = []
+        for i in obj.fields:
+            self.fields[i[1]][i[0]] = c
+            patch = patches.Rectangle(i, 1, 1, fc=col)
+            _patches.append(patch)
+            self.ax.add_patch(patch)
+        self.objects[obj] = [obj.fields, _patches]
+
+    def spawn_food(self):
+        free = []
+        for y, row in enumerate(self.fields):
+            for x, f in enumerate(row):
+                if f == self.EMPTY:
+                    free.append((x, y))
+
+        field = random.choice(free)
+        f = Food(self, field)
+
+    def rm_food(self, field: tuple):
+        objs = [k for (k, v) in self.objects.items() if field in v[0]]
+        for obj in objs:
+            self.rm_obj(obj)
+            self.spawn_food()
+        
+    def update(self, obj: GameObject):
+        """Remove depreciated object and locate the fresh one"""
+        self.rm_obj(obj)
+        self.add_obj(obj)
+
+    def can_move(self, field: tuple) -> bool:
+        """Check if the given point isn't beyond the border and if it's not,
+        check if it isn't occupied"""
+        x, y = field
+        if not ((0 <= x < self.length) & (0 <= y < self.height)):
+            return False
+        if self.fields[y][x] not in [0, 'F']:
+            return False
+        return True
+
+    def print_asc(self):
+        """Nicely print the border in the terminal"""
+        border = '+' + ' - '*self.l + '+'
+        print(border)
+        for i in self.fields:
+            for j in i:
+                print(j, end=' ')
+            print()
+        print(border)
 
 
-class Snake():
-    def __init__(self, board):
-        self.head = 0, 0
-        self.body = [self.head]
+class Snake(GameObject):
+    def __init__(self, board: Board, callback):
+        self.fields = [(2, 5),
+                (3, 5),
+                (4, 5),
+                (5, 5),
+                (6, 5),
+                (7, 5)]
         self.orientation = 0  # 0, 1, 2, 3 == N, E, W, S
-        self.speed = 1
+        self.speed = 1  # how many fields it moves in 1 turn
+        self.callback = callback
 
-        self.board = board  # the board that the snake "lives" on
+        self.actions = {
+                0: lambda *x: None,
+                'S': lambda *x: None,
+                'F': self.feed,
+                }
 
-    def collision(self):
-        d, x, y = self.orientation, self.head[0], self.head[1]
-        l, h = self.board.length, self.board.height
+        super().__init__(board, 'S', 'r', self.fields)
 
-        # check collision with board's boundaries
-        if d == 0:
-            if y == h - 1:
-                return True
-            next_field = (x, y + 1)
-        if d == 1:
-            if x == l - 1:
-                return True
-            next_field = (x + 1, y)
-        if d == 2:
-            if y == 0:
-                return True
-            next_field = (x, y - 1)
-        if d == 3:
-            if x == 0:
-                return True
-            next_field = (x - 1, y)
+    def new_field(self) -> tuple:
+        """
+        Calculate the new positon of the snake's head
+        if it's gonna make a move
+        """
+        head_x, head_y = self.fields[-1]
+        dx, dy = [(0, 1), (1, 0), (0, -1), (-1, 0)][self.orientation]
+        dx *= self.speed
+        dy *= self.speed
+        return head_x + dx, head_y + dy
 
-        if self.board[next_field] != 0:
-            return True
-        return False
+    def set_orientation(self, orient: int) -> bool:
+        """
+        Check if the direction is legal, if it is - turn snake and
+        return True, otherwsie do nothing and return False
+        """
+        if not 0 <= orient < 4:  # no such an orientation
+            raise ValueError
+        
+        if {self.orientation, orient} in [{0, 2},{1, 3}]:  # cant turn 180 dg
+            return False
 
-    def move(self, leap=1, direction=0):
-        if not self.orientation:
-            self.body = [(i[0], i[1] + 1) for i in self.body]
-        elif self.orientation == 1:
-            self.body = [(i[0] + 1, i[1]) for i in self.body]
-        elif self.orientation == 2:
-            self.body = [(i[0], i[1] - 1) for i in self.body]
-        elif self.orientation == 3:
-            self.body = [(i[0] - 1, i[1]) for i in self.body]
+        self.orientation = orient
+        return True
 
-        self.board.update(self.body, 0)
+    def kill(self):
+        """
+        Game over
+        """
+        self.callback(self)
 
+    def manage_events(self):
+        events = [self.board.fields[y][x] for (x, y) in self.fields]
+        for i in events:
+            self.actions[i]()
 
-class TestBoard:
-    def __init__(self):
-        pass
+    def feed(self):
+        # find in which direction is the tail is going and get the field behind
+        # diff betwen pre-tail and tail gotta be same as tail and post-tail
+        tail_x, tail_y = self.fields[0]
+        pretail_x, pretail_y = self.fields[1]
+        dx, dy = pretail_x - tail_x, pretail_y - tail_y
+        
+        post_tail = self.fields[0][0] + dx, self.fields[0][1] + dy
+        self.fields = [post_tail] + self.fields
+        self.board.rm_food(self.fields[-1])
+        self.board.update(self)
 
+    def move(self) -> bool:
+        """
+        Calculate the new snake head's position, check
+        if the movement is legal and then lose the tail and
+        add new head_pos to the body; if isn't legal, game over
+        """
+        new = self.new_field()
+        
+        if not self.board.can_move(new):
+            self.kill()
+            return False
+        self.fields = self.fields[1:] + [new]  # the actual movement
 
-class TestSnake:
-    def __init__(self):
-        pass
+        # the tail becomes the head - no need to refresh every patch
+        # self.patches[0].set_xy(new)
+        # self.patches = self.patches[1:] + [self.patches[0]]
 
-    def run(self):
-        self.test_init()
-        self.test_check_collision()
-        self.test_move()
-
-    def test_init(self):
-        snake = Snake(Board())
-        assert snake.head == (0, 0)
-        assert snake.body == [snake.head]
-        assert snake.speed == 1
-        assert snake.orientation == 0
-
-    def test_check_collision(self):
-        snake = Snake(Board())
-
-        snake.head = (0, 0)
-        snake.body = [snake.head]
-        snake.orientation = 2
-        assert snake.collision()
-
-        snake.orientation = 3
-        assert snake.collision()
-
-        snake.head = (0, 1)
-        snake.body = [(0, 0), (1, 0), (2, 0),
-                      (2, 1), (2, 2),
-                      (1, 2), (0, 2),
-                      snake.head]
-        snake.orientation = 2
-        assert snake.collision()
-
-        snake.head = (0, 1)
-        snake.body = [(0, 0), (1, 0),
-                      (1, 1), snake.head]
-        snake.orientation = 3
-        assert snake.collision()
-
-        snake.head = (4, 3)
-        snake.body = [(3, 3), (3, 4), (3, 5), (3, 6),
-                      (4, 6), (4, 5), (4, 4), snake.head]
-        snake.orientation = 2
-        assert not snake.collision()
-
-    def test_move(self):
-        snake = Snake(Board())
-
-        snake.head = (0, 0)
-        snake.move(0)
-        assert snake.head == (0, 1)
-
-        snake.move(1)
-        assert snake.head == (1, 1)
-
-        snake.move(2)
-        assert snake.head == (1, 0)
-
-        assert not snake.move(2)
-        assert snake.head == (1, 0)
-
-        assert snake.body == [snake.head]
-
-        snake.head = (5, 4)
-        body = [(0, 0), (1, 0), (2, 0),
-                (2, 1), (3, 1), (4, 1),
-                (4, 2), (4, 3), (4, 4), snake.head]
-        snake.body = body
-        snake.move(1)
-        assert snake.head == (6, 4)
-        assert snake.body == body[1:] + [(6, 4)]
+        self.manage_events()
+        self.board.update(self)
+        return True
 
 
-def main():
-    pass
+class Food(GameObject):
+    def __init__(self, board: Board, pos: tuple):
+        super().__init__(board, 'F', 'g', [pos])
 
+
+def onkey(event):
+    sys.exit()
+    print(event.key())
 
 if __name__ == '__main__':
-    TestSnake().run()
-    main()
-=======
-	def __init__(self, l=10, h=10):
-		self.length = l
-		self.height = h
-		self.fields = [[0 for _ in range(l)] for _ in range(h)]
-	
-	def __getitem__(self, pos):
-		return self.fields[pos[1]][pos[0]]
+    plt.ion()
+    fig, ax = plt.subplots()
+
+    cid = fig.canvas.mpl_connect('button_pressed_event', onkey)
+
+    is_alive = threading.Event()
+    is_alive.set()
+
+    def foo(s: Snake):
+        print('Looser!')
+        is_alive.clear()
+
+    b = Board(fig, ax, 11, 11)
+    s = Snake(b, foo)
+    f = Food(b, (10, 10))
+
+    ax.set_xlim([0, b.length])
+    ax.set_ylim([0, b.height])
+    ax.set_xticks([i for i in range(b.length)])
+    ax.set_yticks([i for i in range(b.height)])
+
+    # patch = patches.Rectangle(s.fields[-1], 1, 1, fc='g')
+    # for patch in s.patches:
+        # ax.add_patch(patch)
+    # ax.add_patch(patches.Rectangle(f.fields[0], 1, 1, fc='r'))
+    fig.canvas.draw()
+
+    def uncond():
+        while is_alive.is_set():
+            inp = input()
+            # is_alive could change during the input
+            if not is_alive.is_set(): return
+            try:
+                s.set_orientation(int(inp))
+            except ValueError:
+                continue
 
 
-class Snake():
-	def __init__(self, board):
-		self.head = 0, 0
-		self.body = [self.head]
-		self.orientation = 0  # 0, 1, 2, 3 == N, E, W, S
-		self.speed = 1
-		
-		self.board = board  # the board that the snake "lives" on
-	
-	def collision(self):
-		d, x, y = self.orientation, self.head[0], self.head[1]
-		l, h = self.board.length, self.board.height
-		
-		# check collision with board's boundaries
-		if d == 0:
-			if y == h-1:
-				return True
-			next_field = (x, y + 1)
-		if d == 1:
-			if x == l-1:
-				return True
-			next_field = (x + 1, y)
-		if d == 2:
-			if y == 0:
-				return True
-			next_field = (x, y - 1)
-		if d == 3:
-			if x == 0:
-				return True
-			next_field = (x - 1, y)
-		
-		if self.board[next_field] != 0:
-			return True
-		return False
-		
+    t2 = threading.Thread(target=uncond)
+    t2.start()
 
-	def move(self, leap=1, direction=0):
-		if not self.orientation:
-			self.body = [(i[0], i[1]+1) for i in self.body]
-		elif self.orientation == 1:
-			self.body = [(i[0]+1, i[1]) for i in self.body]
-		elif self.orientation == 2:
-			self.body = [(i[0], i[1]-1) for i in self.body]
-		elif self.orientation == 3:
-			self.body = [(i[0]-1, i[1]) for i in self.body]
-		
-		self.board.update(self.body, 0)
+    while is_alive.is_set():
+        s.move()
+        # patch.set_xy(s.fields[-1])
+        fig.canvas.draw()
+        time.sleep(3)
 
+    print('Press any button to quit')
+    t2.join()
 
-class TestBoard:
-	def __init__(self):
-		pass
-
-
-class TestSnake:
-	def __init__(self):
-		pass
-	
-	def run(self):
-		self.test_init()
-		self.test_check_collision()
-		self.test_move()
-
-	def test_init(self):
-		snake = Snake(Board())
-		assert snake.head == (0, 0)
-		assert snake.body == [snake.head]
-		assert snake.speed == 1
-		assert snake.orientation == 0
-	
-	def test_check_collision(self):
-		snake = Snake(Board())
-
-		snake.head = (0, 0)
-		snake.body = [snake.head]
-		snake.orientation = 2
-		assert snake.collision()
-		
-		snake.orientation = 3
-		assert snake.collision()
-		
-		snake.head = (0, 1)
-		snake.body = [(0, 0), (1, 0), (2, 0),
-				(2, 1), (2, 2),
-				(1, 2), (0, 2),
-				snake.head]
-		snake.orientation = 2
-		assert snake.collision()
-		
-		snake.head = (0, 1)
-		snake.body = [(0, 0), (1, 0),
-				(1, 1), snake.head]
-		snake.orientation = 3
-		assert snake.collision()
-		
-		snake.head = (4, 3)
-		snake.body = [(3, 3), (3, 4), (3, 5), (3, 6),
-				(4, 6), (4, 5), (4, 4), snake.head]
-		snake.orientation = 2
-		assert not snake.collision()
-	
-	def test_move(self):
-		snake = Snake(Board())
-		
-		snake.head = (0, 0)
-		snake.move(0)
-		assert snake.head == (0, 1)
-		
-		snake.move(1)
-		assert snake.head == (1, 1)
-
-		snake.move(2)
-		assert snake.head == (1, 0)
-
-		assert not snake.move(2)
-		assert snake.head == (1, 0)
-		
-		assert snake.body == [snake.head]
-		
-		snake.head = (5, 4)
-		body = [(0, 0), (1, 0), (2, 0),
-			(2, 1), (3, 1), (4, 1),
-			(4, 2), (4, 3), (4, 4), snake.head]
-		snake.body = body
-		snake.move(1)
-		assert snake.head == (6, 4)
-		assert snake.body == body[1:] + [(6, 4)]
-
-def main():
-	pass
-
-if __name__ == '__main__':
-	TestSnake().run()
-	main()
