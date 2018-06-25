@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 
 domain = 'https://warsztatywww.pl'
 
-src = requests.get(domain + '/2017/program/').content
+src = requests.get(domain + '/2018/program/').content
 soup = BeautifulSoup(src, 'html.parser')
 
 # get names of workshops
@@ -41,6 +41,11 @@ for name, link in zip(headers, hrefs):
 base_dir = 'WWW tasks/'
 if not os.path.isdir(base_dir):
     os.mkdir(base_dir)
+sec_dir = '2018/'
+
+if not os.path.isdir(sec_dir):
+	os.mkdir(sec_dir)
+base_dir += sec_dir
 
 for title, url in sets.items():
     resp = requests.get(url, stream=True)
