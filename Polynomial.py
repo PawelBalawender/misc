@@ -111,19 +111,24 @@ gen = generate_primes()
 primes = [next(gen) for _ in range(len(coefficients))]
 
 
+def is_almost_integer(x: float, tol=1e-11) -> bool:
+    """
+    Check if a float is almost an integer
+    """
+    return abs(x - int(round(x, 8))) < tol
+assert is_almost_integer(0.99999999999997102)
+assert not is_almost_integer(0.99)
+
+
 def get_actual_zeros(_roots: np.ndarray) -> list:
     """
     Essential thing about parsing Polynomial code - take original polynomial's
     zeros and find the actual operations that they correspond to
     """
-    found: Set[np.complex128] = set()
-    operations: List[Tuple[np.complex128, int, int]] = []
-
+    # found: Set[np.complex128] = set()
+    operations: List[Tuple[int, float, int]] = []
     for prime in primes:
         for root in _roots:
-            if root in found:
-                continue
-
             if root.imag:  # a+bi -> a + (p^b)i
                 exp = np.log(root.imag) / np.log(prime)
             else:  # a -> p^a
@@ -131,23 +136,20 @@ def get_actual_zeros(_roots: np.ndarray) -> list:
 
             # if exp is int or almost-int - we found it!
             # int_exp is our actual zero - so the operation
-            int_exp = int(exp)
-            if abs(exp - int_exp) < 1e-12:
-                operations += [(prime, root, int_exp)]
-                found.add(root)
-                continue
+            if is_almost_integer(exp):
+                int_exp = int(round(exp, 8))
+                if root.imag:
+                    operand, operator = root.real, int_exp * 1j
+                    if is_almost_integer(operand):
+                        operand = int(round(operand, 8))
+                else:
+                    operand, operator = 0, int_exp
+                operations += [(prime, operand, operator)]
 
-    operations.sort()  # 'prime' is the first field so it will work properly
-    actual_zeros: List[Operation] = []
-    for i in operations:
-        if not i[0].imag:
-            # it's a real zero - we save just the operation;
-            # None is a placeholder
-            actual_zeros += [(i[2], 0)]
-        else:
-            # it's a complex 0
-            actual_zeros += [(i[1].real, i[2])]
-    return actual_zeros
+    # now sort array by the order and then disregard the prime number
+    # 'prime' is the first field so sorting will work properly
+    operations.sort()
+    return [i[1:] for i in operations]
 
 pol_code = get_actual_zeros(roots)
 pol_code.append('\0')
@@ -188,34 +190,34 @@ REG = 0
 CMD_PNTR = 0
 
 cmd = pol_code[CMD_PNTR]
-while cmd != '\0':
-    real, imag = cmd
-    if ((real == 1 and not REG > 0)
-        or (real == 3 and not REG < 0)
-        or (real == 4 and not REG == 0)):
-        CMD_PNTR = jumps[CMD_PNTR]
-    elif ((real == 5 and not REG > 0)
-          or (real == 7 and not REG < 0)
-          or (real == 8 and not REG == 0)):
-        CMD_PNTR = jumps[CMD_PNTR]
-    elif real == 6:
-        CMD_PNTR = jumps[CMD_PNTR]
-        continue
-    else:
-        if imag == 1:
-            n = int(input())
-            REG += n
-        elif imag == 2:
-            REG -= real
-            print(REG)
-        elif imag == 3:
-            REG *= real
-        elif imag == 4:
-            REG /= real
-        elif imag == 5:
-            REG %= real
-        elif imag == 6:
-            REG **= real
-    CMD_PNTR += 1
-    cmd = pol_code[CMD_PNTR]
-    continue
+# while cmd != '\0':
+#     real, imag = cmd
+#     if ((real == 1 and not REG > 0)
+#         or (real == 3 and not REG < 0)
+#         or (real == 4 and not REG == 0)):
+#         CMD_PNTR = jumps[CMD_PNTR]
+#     elif ((real == 5 and not REG > 0)
+#           or (real == 7 and not REG < 0)
+#           or (real == 8 and not REG == 0)):
+#         CMD_PNTR = jumps[CMD_PNTR]
+#     elif real == 6:
+#         CMD_PNTR = jumps[CMD_PNTR]
+#         continue
+#     else:
+#         if imag == 1:
+#             n = int(input())
+#             REG += n
+#         elif imag == 2:
+#             REG -= real
+#             print(REG)
+#         elif imag == 3:
+#             REG *= real
+#         elif imag == 4:
+#             REG /= real
+#         elif imag == 5:
+#             REG %= real
+#         elif imag == 6:
+#             REG **= real
+#     CMD_PNTR += 1
+#     cmd = pol_code[CMD_PNTR]
+#     continue
