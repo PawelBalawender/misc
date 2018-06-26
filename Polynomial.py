@@ -8,8 +8,6 @@ from typing import List, Tuple, Set
 
 import numpy as np
 
-cat = 'f(x) = x^10 - 4827056x^9 + 1192223600x^8 - 8577438158x^7 + 958436165464x^6 - 4037071023854x^5 + 141614997956730x^4 - 365830453724082x^3 + 5225367261446055x^2 - 9213984708801250x + 21911510628393750'
-
 Operation = namedtuple('Operation', ['operation', 'operand'])
 
 
@@ -85,16 +83,6 @@ def get_coefficients(_pairs: List[tuple]) -> List[int]:
         power_counter -= 1
     return _coefficients
 
-# todo: parser could use yielding and save some memory
-pairs = parse_polynomial(cat)  # ok
-coefficients = get_coefficients(pairs)  # ok
-roots = np.roots(coefficients)  # ok
-
-# eliminate almost-zeros and complex conjugates
-roots.real[abs(roots.real) < 1e-11] = 0
-roots.imag[abs(roots.imag) < 1e-11] = 0
-roots = roots[roots.imag >= 0]
-
 
 def generate_primes():
     _primes = {2}
@@ -107,26 +95,25 @@ def generate_primes():
             yield current
         current += 2  # omit even numbers
 
-gen = generate_primes()
-primes = [next(gen) for _ in range(len(coefficients))]
-
 
 def is_almost_integer(x: float, tol=1e-11) -> bool:
     """
     Check if a float is almost an integer
     """
     return abs(x - int(round(x, 8))) < tol
-assert is_almost_integer(0.99999999999997102)
-assert not is_almost_integer(0.99)
 
 
-def get_actual_zeros(_roots: np.ndarray) -> list:
+def get_actual_zeros(_roots: np.ndarray) -> List[complex]:
     """
     Essential thing about parsing Polynomial code - take original polynomial's
     zeros and find the actual operations that they correspond to
     """
-    # found: Set[np.complex128] = set()
-    operations: List[Tuple[int, float, int]] = []
+    # todo: the complexity can be decreased from primes*_roots to some log
+    # todo: by checking the roots that have been already calculated
+    prime_gen = generate_primes()
+    primes = [next(prime_gen) for _ in _roots]
+
+    commands = [0 for _ in _roots]
     for prime in primes:
         for root in _roots:
             if root.imag:  # a+bi -> a + (p^b)i
@@ -140,24 +127,18 @@ def get_actual_zeros(_roots: np.ndarray) -> list:
                 int_exp = int(round(exp, 8))
                 if root.imag:
                     operand, operator = root.real, int_exp * 1j
+                    # eliminate operand==0.99999987 etc.
                     if is_almost_integer(operand):
                         operand = int(round(operand, 8))
                 else:
                     operand, operator = 0, int_exp
-                operations += [(prime, operand, operator)]
-
-    # now sort array by the order and then disregard the prime number
-    # 'prime' is the first field so sorting will work properly
-    operations.sort()
-    return [i[1:] for i in operations]
-
-pol_code = get_actual_zeros(roots)
-pol_code.append('\0')
-print(pol_code)
+                # sorting by making this lookup in the primes' order table
+                commands[primes.index(prime)] = operand + operator
+    return commands
 
 
-# localize while loops and if-clauses
-def get_blocks(code) -> list:
+def get_blocks(code: List[complex]) -> list:
+    """Localize while-loops and if-clauses in given Polynomial code"""
     code = [i[0] for i in code[:-1]]
     ifs = []
     whiles = []
@@ -181,6 +162,25 @@ def get_blocks(code) -> list:
                 c -= 1
             whiles[c][1] = line
     return ifs + whiles
+
+# quick testing
+assert is_almost_integer(0.99999999999997102)
+assert not is_almost_integer(0.99)
+
+cat = 'f(x) = x^10 - 4827056x^9 + 1192223600x^8 - 8577438158x^7 + 958436165464x^6 - 4037071023854x^5 + 141614997956730x^4 - 365830453724082x^3 + 5225367261446055x^2 - 9213984708801250x + 21911510628393750'
+
+# todo: parser could use yielding and save some memory
+pairs = parse_polynomial(cat)  # ok
+coefficients = get_coefficients(pairs)  # ok
+roots = np.roots(coefficients)  # ok
+
+# eliminate almost-zeros and complex conjugates
+roots.real[abs(roots.real) < 1e-11] = 0
+roots.imag[abs(roots.imag) < 1e-11] = 0
+roots = roots[roots.imag >= 0]
+
+pol_code = get_actual_zeros(roots)
+pol_code.append('\0')
 
 blocks = get_blocks(pol_code)
 jumps = {block[0]: block[1] for block in blocks}
