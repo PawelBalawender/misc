@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8
 """
-This module takes qualification tasks
+This module downloads qualification tasks
 from "WWW" workshops and saves them
 """
 import os

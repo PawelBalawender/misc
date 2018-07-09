@@ -1,45 +1,52 @@
 #!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
+"""
+This module implements the snake game
+Graphics are made in MatPlotlib
+"""
 import threading
+from typing import Tuple, Callable, Any, Dict, List
 import random
 import time
 import sys
 
+import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-"""
-This module implements the snake game
-"""
+
+# just for type hints
+Field = Tuple[int, int]  # [(1, 0), (1, 1), (1, 2)...]
+Patch = patches.Rectangle
+Figure = matplotlib.figure.Figure
+Ax = Any  # idk how to get the type of ax; writes no attribute error
 
 
-# just a declaration for type annotations
 class Board: pass
 
 
 class GameObject:
-    def __init__(
-            self,
-            board: Board,
-            char: str,
-            color: str,
-            fields: list):
+    def __init__(self, board: Board, char: str, color: str, fields: list):
         self.board = board
-        self.char = char
-        self.color = color
-        self.fields = fields        
+        self.char = char  # unique char that represent the obj on the board
+        self.color = color  # color of the patch of this object in GUI
+        self.fields = fields  # list of fields on brd occupied by the object
+        
         self.board.add_obj(self)
 
 
 class Board:
-    def __init__(self, fig, ax, l=21, h=21):
+    def __init__(self, fig: Figure, ax: Ax, width: int=21, height: int=21):
         self.fig = fig
         self.ax = ax
-        self.length = l
-        self.height = h
-        self.fields = [[0 for _ in range(l)] for _ in range(h)]
-        # BoardObject: Tuple[List[tuple[int]], List[patches.Rectangle]]
-        self.objects = dict()
+        self.width = width
+        self.height = height
+        self.fields = [[0 for _ in range(width)] for _ in range(height)]
+        # type: Dict[GameObj: (fields, patches)]
+        GameObjDict = Dict[GameObject, Tuple[List[Field], List[Patch]]]
+        self.objects: GameObjDict = dict()
 
+        self.xsize = 1  # visual size of one tile
+        self.ysize = 1
         self.EMPTY = 0  # it indicates an empty field in the array
 
     def rm_obj(self, obj: GameObject):
@@ -47,39 +54,43 @@ class Board:
         Find the fields that the given object has occupied on the board,
         clear them and then 'check out' the object from the board
         """
-        # iterate over transposed version ([flds], [ptchs] -> [f0, p0...])
+        # transpose to convert [(fld, ptch), ...] to [(fld, fld..), (ptch, ..)]
         for field, patch in zip(*self.objects[obj]):
             x, y = field
             self.fields[y][x] = self.EMPTY
             patch.set_visible(False)
+            del patch
         del self.objects[obj]
 
     def add_obj(self, obj: GameObject):
         """
         'Check in' the given object and place its chars on the board
         """
-        c = obj.char
-        col = obj.color
-
         _patches = []
-        for i in obj.fields:
-            self.fields[i[1]][i[0]] = c
-            patch = patches.Rectangle(i, 1, 1, fc=col)
+        for field in obj.fields:
+            x, y = field
+            self.fields[y][x] = obj.char
+            patch = patches.Rectangle(field, self.xsize, self.ysize, fc=obj.color)
             _patches.append(patch)
             self.ax.add_patch(patch)
+        
         self.objects[obj] = [obj.fields, _patches]
 
     def spawn_food(self):
-        free = []
-        for y, row in enumerate(self.fields):
-            for x, f in enumerate(row):
-                if f == self.EMPTY:
-                    free.append((x, y))
-
+        """Spawn new piece of food for the snake on the board"""
+        range_x, range_y = range(self.width), range(self.height)
+        e = self.EMPTY
+        free = [(x, y) for x in range_x for y in range_y if self.fields[y][x] == e]
+        # If the border was big enough, we could randomize field and then check
+        # if it's occupied - would be faster then, but what about a case when
+        # the snake is so big that it's on a significant part of the board?
         field = random.choice(free)
         f = Food(self, field)
 
-    def rm_food(self, field: tuple):
+    def rm_food(self, field: Field):
+        """Remove the food that has already been eaten by the snake"""
+        # v[0] are the fields. v[1] are the patches
+        # actually it usually iterates once, but just to be sure;
         objs = [k for (k, v) in self.objects.items() if field in v[0]]
         for obj in objs:
             self.rm_obj(obj)
@@ -94,25 +105,23 @@ class Board:
         """Check if the given point isn't beyond the border and if it's not,
         check if it isn't occupied"""
         x, y = field
-        if not ((0 <= x < self.length) & (0 <= y < self.height)):
+        if not ((0 <= x < self.width) & (0 <= y < self.height)):
             return False
-        if self.fields[y][x] not in [0, 'F']:
+        if self.fields[y][x] not in [self.EMPTY, 'F']:
             return False
         return True
 
     def print_asc(self):
-        """Nicely print the border in the terminal"""
+        """Nicely print the board in the terminal"""
         border = '+' + ' - '*self.l + '+'
         print(border)
-        for i in self.fields:
-            for j in i:
-                print(j, end=' ')
-            print()
+        for row in self.fields:
+            print(' '.join(field for field in row))
         print(border)
 
 
 class Snake(GameObject):
-    def __init__(self, board: Board, callback):
+    def __init__(self, board: Board, callback_end: Callable):
         self.fields = [(2, 5),
                 (3, 5),
                 (4, 5),
@@ -121,15 +130,18 @@ class Snake(GameObject):
                 (7, 5)]
         self.orientation = 0  # 0, 1, 2, 3 == N, E, W, S
         self.speed = 1  # how many fields it moves in 1 turn
-        self.callback = callback
+        self.callback_end = callback_end
+
+        def foo(*args):
+            pass
 
         self.actions = {
-                0: lambda *x: None,
-                'S': lambda *x: None,
+                0: foo,
+                'S': foo,
                 'F': self.feed,
                 }
 
-        super().__init__(board, 'S', 'r', self.fields)
+        super().__init__(board=board, char='S', color='r', fields=self.fields)
 
     def new_field(self) -> tuple:
         """
@@ -145,12 +157,11 @@ class Snake(GameObject):
     def set_orientation(self, orient: int) -> bool:
         """
         Check if the direction is legal, if it is - turn snake and
-        return True, otherwsie do nothing and return False
+        return True, otherwise do nothing and return False
         """
-        if not 0 <= orient < 4:  # no such an orientation
-            raise ValueError
+        assert 0 <= orient < 4
         
-        if {self.orientation, orient} in [{0, 2},{1, 3}]:  # cant turn 180 dg
+        if {self.orientation, orient} in [{0, 2}, {1, 3}]:  # cant turn 180 deg
             return False
 
         self.orientation = orient
@@ -160,22 +171,28 @@ class Snake(GameObject):
         """
         Game over
         """
-        self.callback(self)
+        self.callback_end()
 
     def manage_events(self):
+        """
+        Catch up with what's going on on the board. If the snake has hit some food
+        or something, do what should have been done
+        """
         events = [self.board.fields[y][x] for (x, y) in self.fields]
         for i in events:
             self.actions[i]()
 
     def feed(self):
-        # find in which direction is the tail is going and get the field behind
-        # diff betwen pre-tail and tail gotta be same as tail and post-tail
+        """
+        Find in which direction is the tail is going and get the field behind
+        Diff betwen pre-tail and tail gotta be same as tail and post-tail
+        """
         tail_x, tail_y = self.fields[0]
         pretail_x, pretail_y = self.fields[1]
         dx, dy = pretail_x - tail_x, pretail_y - tail_y
         
         post_tail = self.fields[0][0] + dx, self.fields[0][1] + dy
-        self.fields = [post_tail] + self.fields
+        self.fields.insert(0, post_tail)
         self.board.rm_food(self.fields[-1])
         self.board.update(self)
 
@@ -190,6 +207,7 @@ class Snake(GameObject):
         if not self.board.can_move(new):
             self.kill()
             return False
+
         self.fields = self.fields[1:] + [new]  # the actual movement
 
         # the tail becomes the head - no need to refresh every patch
@@ -202,62 +220,65 @@ class Snake(GameObject):
 
 
 class Food(GameObject):
-    def __init__(self, board: Board, pos: tuple):
-        super().__init__(board, 'F', 'g', [pos])
-
-
-def onkey(event):
-    sys.exit()
-    print(event.key())
+    def __init__(self, board: Board, pos: Field):
+        super().__init__(board, char='F', color='g', fields=[pos])
 
 if __name__ == '__main__':
-    plt.ion()
     fig, ax = plt.subplots()
 
-    cid = fig.canvas.mpl_connect('button_pressed_event', onkey)
 
     is_alive = threading.Event()
     is_alive.set()
 
-    def foo(s: Snake):
-        print('Looser!')
-        is_alive.clear()
-
     b = Board(fig, ax, 11, 11)
-    s = Snake(b, foo)
+    s = Snake(board=b, callback_end=is_alive.clear)
     f = Food(b, (10, 10))
 
-    ax.set_xlim([0, b.length])
+    ax.set_xlim([0, b.width])
     ax.set_ylim([0, b.height])
-    ax.set_xticks([i for i in range(b.length)])
+    ax.set_xticks([i for i in range(b.width)])
     ax.set_yticks([i for i in range(b.height)])
 
-    # patch = patches.Rectangle(s.fields[-1], 1, 1, fc='g')
-    # for patch in s.patches:
-        # ax.add_patch(patch)
-    # ax.add_patch(patches.Rectangle(f.fields[0], 1, 1, fc='r'))
     fig.canvas.draw()
 
-    def uncond():
+    def keyboard_handler(event):
+        dirs = {'up': 0, 'right': 1, 'down': 2, 'left': 3}
+        try:
+            result = s.set_orientation(dirs[event.key])
+            if not result:
+                print('Wrong direction! Remember that you canot\
+rotate 180 degrees')
+        except KeyError:
+            pass
+        except ValueError:
+            pass
+
+    def input_handler():
         while is_alive.is_set():
             inp = input()
-            # is_alive could change during the input
-            if not is_alive.is_set(): return
+
             try:
-                s.set_orientation(int(inp))
+                result = s.set_orientation(int(inp))
+                if not result:
+                    print('Wrong direction! Remember that you cannot\
+rotate 180 degrees')
             except ValueError:
-                continue
+                pass
 
-
-    t2 = threading.Thread(target=uncond)
-    t2.start()
+    
+    cid = fig.canvas.mpl_connect('key_press_event', keyboard_handler)
+    input_thread = threading.Thread(target=input_handler)
+    input_thread.start()
 
     while is_alive.is_set():
+        # s.move gotta be in the main thread, cause it deals with mpl methods
+        # for instance in patch.set_visible(False) at object deleting
+        # it will result in Runtime Error if put in in a thread
         s.move()
-        # patch.set_xy(s.fields[-1])
         fig.canvas.draw()
-        time.sleep(3)
+        plt.pause(0.4)
 
+    # input is still blocking
     print('Press any button to quit')
-    t2.join()
+    input_thread.join()
 

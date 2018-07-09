@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 """
-This module checks for the symmetry group of a string
-Look for symmetry groups in the Internet - those are p1m1, p11m etc.
+This module checks the symmetry group of a string (actually it only
+examines them towards p1m1, p11m and p2mm groups)
+Here strings are taken from the Polish dictionary (from sjp.pl)
 """
 from math import ceil
 
