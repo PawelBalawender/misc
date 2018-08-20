@@ -14,10 +14,11 @@ ax.set_xlim(0, xlim)
 ax.set_ylim(0, 4095)
 
 x = 0
+t = time.time()
 while x < xlim:
     plt.plot(x, x, 'ro')
     x += 50
     plt.pause(0.0001)
-
+print(time.time()-t)
 plt.show()
 
