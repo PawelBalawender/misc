@@ -13,14 +13,9 @@ ax = fig.add_subplot(111)
 ax.set_xlim(0, xlim)
 ax.set_ylim(0, 4095)
 
-xs = np.arange(xlim)
-ys = np.zeros(xlim)
-points, = ax.plot(xs, ys, 'ro')
-
 x = 0
 while x < xlim:
-    ys[x] = x
-    points.set_ydata(ys)
+    plt.plot(x, x, 'ro')
     x += 50
     plt.pause(0.0001)
 
