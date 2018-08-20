@@ -1,109 +1,139 @@
 #!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
-from tkinter import *
+from typing import Tuple
+import tkinter
 import serial
 import time
 
+# ADC resolution in bits
+DATA_RES = 12
+
 xlim = 100
-ylim = 4095
+ylim = 2 ** DATA_RES - 1
 
-stm = serial.Serial('/dev/ttyACM0', baudrate=9600)
-if not stm.is_open:
-    stm.open()
-
-master = Tk()
-master.title('Data')
-
-WINSIZE = 50
-width = 16 * WINSIZE
-height = 9 * WINSIZE
-w = Canvas(master, width=width, height=height)
-bg = w['background']
-
-# relative sizes of axes
-x_size = int(width * 0.8)
-y_size = int(height * 0.8)
-# beginning of the plot
-Ox = int(width * 0.1)
-Oy = int(height * 0.9)
+Point = Tuple[int, int]
 
 
-def center_window() -> None:
-    win_width = master.winfo_screenwidth()
-    win_height = master.winfo_screenheight()
-    cx = win_width//2 - width//2
-    cy = win_height//2 - height//2
-    master.geometry('{}x{}+{}+{}'.format(width, height, cx, cy))
+class Plot:
+    def __init__(self, xlim: int=1, ylim: int=1):
+        self.root = tkinter.Tk()
+        self.root.title('UART data')
+
+        self.xlim = xlim
+        self.ylim = ylim
+
+        # relative window size
+        size = 50
+        self.width = 16 * size
+        self.height = 9 * size
+        
+        self.canvas = tkinter.Canvas(self.root, width=self.width, height=self.height)
+        self.background_color = self.canvas['background']
+
+        # relative sizes of axes
+        self.ax_xsize = int(self.width * 0.8)
+        self.ax_ysize = int(self.height * 0.8)
+        # beginning of the plot
+        self.ox = int(self.width * 0.1)
+        self.oy = int(self.height * 0.9)
+        # axes' ends
+        self.ox_end = self.ox + self.ax_xsize
+        self.oy_end = self.oy - self.ax_ysize
+        
+        # live plotting flags
+        self.stop = -1
+        self.restart = -2
+
+        self.center_window()
+        self.draw_axes()
+
+        self.canvas.pack(expand=tkinter.YES, fill=tkinter.BOTH)
+        #self.root.mainloop()
+
+    def center_window(self) -> None:
+        win_w = self.root.winfo_screenwidth()
+        win_h = self.root.winfo_screenheight()
+        cx = win_w//2 - self.width//2
+        cy = win_h//2 - self.height//2
+        self.root.geometry('{}x{}+{}+{}'.format(self.width, self.height, cx, cy))
+
+    def draw_axes(self) -> None:
+        # OX axis
+        self.canvas.create_line(self.ox, self.oy, self.ox_end, self.oy)
+        # OY axis
+        self.canvas.create_line(self.ox, self.oy, self.ox, self.oy_end)
+
+    def scale_x(self, x: int) -> None:
+        return int(self.ox + (x / self.xlim) * self.ax_xsize)
+
+    def scale_y(self, y: int) -> None:
+        return int(self.oy - (y / self.ylim) * self.ax_ysize)
+
+    def plot(self, a: Point, b: Point) -> None:
+        a = self.scale_x(a[0]), self.scale_y(a[1])
+        b = self.scale_x(b[0]), self.scale_y(b[1])
+        self.canvas.create_line(a[0], a[1], b[0], b[1], fill='red')
+
+    def clear_plot(self) -> None:
+        coords = self.ox+1, self.oy-1, self.ox_end-1, self.oy_end+1
+        kwargs = dict(fill=self.background_color, outline=self.background_color)
+        self.canvas.create_rectangle(*coords, **kwargs)
+
+    def plot_live(self, auto_flush: bool=False):
+        data = None
+        while data != self.stop:
+            data = yield
+            last = data
+
+            x = 0
+            # will restart if there was a request, or x has exceeded the plot
+            while data not in {self.restart, self.stop}:
+                if auto_flush and x >= self.xlim:
+                    break
+                data = yield
+                
+                self.plot((x, last), (x+1, data))
+                last = data
+                x += 1
+                self.canvas.update()
+
+            if auto_flush:
+                self.clear_plot()
 
 
-def draw_axes() -> None:
-    # OX axis
-    w.create_line(Ox, Oy, Ox+x_size, Oy)
-    # OY axis
-    w.create_line(Ox, Oy, Ox, Oy-y_size)
-    w.pack(expand=YES, fill=BOTH)
+class Port:
+    def __init__(self, device: str, baudrate: int):
+        self.port = serial.Serial('/dev/ttyACM0', baudrate=9600)
+        if not self.port.is_open:
+            self.port.open()
 
+    def take_data(self, fresh: bool=False) -> int:
+        if fresh:
+            self.port.reset_input_buffer()
 
-def scale_x(x):
-    return Ox + (x / xlim) * x_size
-
-
-def scale_y(y):
-    return Oy - (y / ylim) * y_size
-
-
-def plot(a, b) -> None:
-    x1, y1 = a
-    x2, y2 = b
-    x1, x2 = scale_x(x1), scale_x(x2)
-    y1, y2 = scale_y(y1), scale_y(y2)
-    w.create_line(x1, y1, x2, y2, fill='red')
-
-
-def clear_plot() -> None:
-    coords = Ox+1, Oy-1, (Ox+x_size)-1, (Oy-y_size)+1
-    kwargs = dict(fill=bg, outline=bg)
-    w.create_rectangle(*coords, **kwargs)
-
-def gen():
-    last = yield
-    x = 0
-    while True:
-        new = yield
-        plot((x, last), (x+1, new))
-        last = new
-        x += 1
-        w.update()
-
-
-def take_data(port) -> int:
-    y = None
-    while y is None:
-        x = port.readline()
-        try:
-            y = int(x)
-        except ValueError:
-            pass
-    return y
+        value = None
+        while value is None:
+            temp = self.port.readline()
+            try:
+                value = int(temp)
+            except ValueError:
+                pass
+        return value
 
 
 if __name__ == '__main__':
-    center_window()
-    draw_axes()
+    plot = Plot(xlim=xlim, ylim=ylim)
+    stm = Port(device='/dev/ttyACM0', baudrate=9600)
 
     # start plotting
-    while True:
-        g = gen()
-        next(g)
-        
-        # send the init y
-        y = take_data(stm)
-        g.send(y)
+    control = plot.plot_live(auto_flush=True)
+    next(control)
+    control.send(stm.take_data(fresh=False))
 
-        for _ in range(xlim):
-            g.send(take_data(stm))
-            stm.reset_input_buffer()
-        
-        clear_plot()
-    master.mainloop()
+    while True:
+        value = stm.take_data(fresh=True)
+        control.send(value)
+        time.sleep(0.01)
+
+    plot.root.mainloop()
 
