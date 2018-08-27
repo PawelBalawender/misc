@@ -1,70 +1,87 @@
 #include<stdio.h>
-#define TESTS_AMOUNT 3
-#define TAB_WIDTH 4
+#define TAB_WIDTH (4U)
 
-static int i;
 
-void encode(char*, int);
+void entab(char*);
 void print_asc(char*);
+void str_to_arr(char*, const char*);
+
 
 /* Change in-place every sequence of tab_width blanks to a tab sign */
-void encode(char* msg, int tab_width) {
+void entab(char* msg) {
+    unsigned int i;
+
     /* With the first pointer we'll iter over the original string,
      * with the second we'll write new characters (modifying in-place) */
     char* original = msg;
-    char* encoded = original;
+    char* entabbed = original;
     
     /* a switch and a counter to detect sequences of blanks */
-    int in_seq = 0;
-    int seq_c = 0;
+    unsigned int in_seq = 0;
+    unsigned int seq_c = 0;
 
     while (*original) {
         if (*original == ' ' && in_seq == 0) in_seq = 1;
         if (*original == ' ' && in_seq) seq_c++;
         if (in_seq && *(original+1) != ' ') {
-            for (i=0; i < seq_c / tab_width; i++) *encoded++ = '\t';
-            for (i=0; i < seq_c % tab_width; i++) *encoded++ = ' ';
+
+            for (i=0; i < seq_c / TAB_WIDTH; i++) *entabbed++ = '\t';
+            for (i=0; i < seq_c % TAB_WIDTH; i++) *entabbed++ = ' ';
             
             in_seq = seq_c = 0;
             
             /* neutralize the folllowing incrementation */
-            encoded--;
+            entabbed--;
+
         }
 
         /* carry on */
-        if (in_seq == 0) encoded++;
+        if (in_seq == 0) entabbed++;
         original++;
 
         /* and rewrite the next char (it will never be a space, so it's ok) */
-        *encoded = *original;
+        *entabbed = *original;
     }
 }
 
+/* Print strings as an array of numerical values */
 void print_asc(char* msg) {
     while (*msg) {
-        printf("%3d ", *msg);
+        printf("%d ", *msg);
         msg++;
     }
     printf("\n");
 }
- 
 
-int main() {
-    char* tests[TESTS_AMOUNT];
-
-    /* test 1: example to compare the following */
-    tests[0] = "Hello,123456World";
-    /* test 2: 4 spaces should transform to 1 tab */
-    tests[1] = "Hello,    World";
-    /* test 3: 6 spaces should transform to 1 tab 2 spaces */
-    tests[2] = "Hello,      World";
-
-
-    for (i=0; i < TESTS_AMOUNT; i++) {
-        encode(tests[i], TAB_WIDTH);
-        print_asc(tests[i]);
+/* Take a constant string literal and save it to a mutable array */
+void str_to_arr(char* arr, const char* str_literal) {
+    const char* p = str_literal;
+    char* a = arr;
+    while (*p) {
+        *a = *p;
+        a++;
+        p++;
     }
+    *a = '\0';
+}
 
+/* The output should read:
+ * 9\n                      1 tab
+ * 9 32 32\n                1 tab, 2 spaces
+ */
+int main() {
+    unsigned int i;
+    char msgs[2][32];
+    /* 4 spaces should transform to 1 tab */
+    str_to_arr(msgs[0], "    ");
+    /* 6 spaces should transform to 1 tab 2 spaces */
+    str_to_arr(msgs[1], "      ");
+
+    for (i=0; i < 2; i++) {
+        entab(msgs[i]);
+        print_asc(msgs[i]);
+    }
+    
     return 0;
 }
 
