@@ -8,6 +8,8 @@ every n columns. Shuld n be a variable or a symbolic parameter?"
 #define MAX_SIZE 1024
 #define TAB_STOP 4
 
+static int i;
+
 char* get_data(void);
 void detab(char* arr, char* container);
 
@@ -16,6 +18,8 @@ int main(void) {
     /* It's a test; exclamation mark should be in the same column in each of
      * cases [0:4] and in each of [4:5]
      */
+     
+    char expanded[MAX_SIZE * TAB_STOP];
     char* data[6];
     data[0] = "\t!";
     data[1] = "1\t!";
@@ -23,8 +27,7 @@ int main(void) {
     data[3] = "  3\t!";
     data[4] = "   4\t!";
     data[5] = "      7\t!";
-    char expanded[MAX_SIZE * TAB_STOP];
-    for (int i=0; i < 6; i++) {
+    for (i=0; i < 6; i++) {
         detab(data[i], expanded);
         printf("%s\n", expanded);
     }
@@ -41,16 +44,16 @@ char* get_data(void) {
  * reach the next tab stop
  */
 void detab(char* raw, char* container) {
-    // count holds the number of chars on the line to find the closest tabstop
-    int i, count=0;
+    /* count holds the number of chars on the line to find the closest tabstop */
+    int count=0;
     while(*raw) {
-        // insert a proper amount of spaces and then decrement the pointer
-        // before it will be incremented again at the end of the loop
+        /* insert a proper amount of spaces */
         if (*raw == '\t') {
             for (i=0; i < TAB_STOP - count % TAB_STOP; i++) {
                 *container = ' ';
                 container++;
             }
+            /* decrement to neutralize the incrementation below */
             container--;
         } else {
             if (*raw == '\n') count = 0;
