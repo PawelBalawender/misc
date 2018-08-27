@@ -10,6 +10,25 @@ void entab(char*);
 void print_asc(char*);
 void str_to_arr(char*, const char*);
 
+/* The output should read:
+ * 9\n                      1 tab
+ * 9 32 32\n                1 tab, 2 spaces
+ */
+int main() {
+    unsigned int i;
+    char msgs[2][32];
+    /* 4 spaces should transform to 1 tab */
+    str_to_arr(msgs[0], "    ");
+    /* 6 spaces should transform to 1 tab 2 spaces */
+    str_to_arr(msgs[1], "      ");
+
+    for (i=0; i < 2; i++) {
+        entab(msgs[i]);
+        print_asc(msgs[i]);
+    }
+    
+    return 0;
+}
 
 /* Change in-place every sequence of tab_width blanks to a tab sign */
 void entab(char* msg) {
@@ -67,25 +86,5 @@ void str_to_arr(char* arr, const char* str_literal) {
         p++;
     }
     *a = '\0';
-}
-
-/* The output should read:
- * 9\n                      1 tab
- * 9 32 32\n                1 tab, 2 spaces
- */
-int main() {
-    unsigned int i;
-    char msgs[2][32];
-    /* 4 spaces should transform to 1 tab */
-    str_to_arr(msgs[0], "    ");
-    /* 6 spaces should transform to 1 tab 2 spaces */
-    str_to_arr(msgs[1], "      ");
-
-    for (i=0; i < 2; i++) {
-        entab(msgs[i]);
-        print_asc(msgs[i]);
-    }
-    
-    return 0;
 }
 
