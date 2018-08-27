@@ -1,3 +1,7 @@
+/* The C Programming Language, ex. 1-21
+ * Replace all strings of blanks by the minimum number of tabs and blanks to
+ * achieve the same spacing. Use the same tab stops as for detab
+ */
 #include<stdio.h>
 #define TAB_WIDTH (4U)
 
