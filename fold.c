@@ -7,8 +7,8 @@ char* folded(char*);
 
 int main(void) {
     /* Those tests should result in 7 "01234567" lines on stdout */
-    printf("%s\n", folded("01234567"));*/
-    printf("%s\n", folded("012345670123456701234567"));*/
+    printf("%s\n", folded("01234567"));
+    printf("%s\n", folded("012345670123456701234567"));
     printf("%s\n", folded("01234567\n01234567\n01234567"));
     return 0;
 }

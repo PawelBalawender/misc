@@ -8,7 +8,7 @@ import time
 # ADC resolution in bits
 DATA_RES = 12
 
-xlim = 100
+xlim = 1000
 ylim = 2 ** DATA_RES - 1
 
 Point = Tuple[int, int]
@@ -75,7 +75,7 @@ class Plot:
         self.canvas.create_line(a[0], a[1], b[0], b[1], fill='red')
 
     def clear_plot(self) -> None:
-        coords = self.ox+1, self.oy-1, self.ox_end-1, self.oy_end+1
+        coords = self.ox+1, self.oy-1, self.ox_end, self.oy_end
         kwargs = dict(fill=self.background_color, outline=self.background_color)
         self.canvas.create_rectangle(*coords, **kwargs)
 

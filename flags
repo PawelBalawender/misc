@@ -1,8 +1,4 @@
--std=c89
--march=native
--O3
+-ansi
+-O0
 -ggdb
 -Weverything
--Wall
--Wextra
--Wpedantic
