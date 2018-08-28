@@ -1,0 +1,4 @@
+-ansi
+-O0
+-ggdb
+-Weverything
