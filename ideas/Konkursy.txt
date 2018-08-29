@@ -1,0 +1,8 @@
+﻿Stypendia:
+	-mBank
+	-fundusz stypendialny TALENTY
+	-http://www.eurodesk.pl/granty/wszystkie
+
+Warsztaty:
+	Wioska Olimpijska
+	Międzynarodowe Warsztaty dla Młodych Matematyków "Kombinatoryka"

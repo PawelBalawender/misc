@@ -1,0 +1,49 @@
+Strong, extremely strong, weak, static, dynamic typing
+Paradigms: imperative, functional, object-oriented, declarative, etc.
+Branch predictor
+Computer architectures; especially 8096, 8086
+Flynn Taxonomy, Turing's machine
+Machine of states
+ORM, Virtual machine
+
+Passes in compiling
+Liskov Substitution Principle
+Design patterns
+Algorithms:
+	book by Tomasiewicz
+	sorting
+	compressing: ZIP, RAR, tar.gz
+Paradigms
+Interface, Base Class, ABC, Metaclass, Metaprogramming
+
+Binary debugging
+LBYL vs EAFP
+
+Maths and analysis:
+	Piecewise Linear Regresion
+	Data binning
+	Logistic Regression
+	Decision Trees
+	Random Forest
+	Naive Bayes
+	Clustering
+
+C++:
+	Pointers
+	STL
+	Boost
+
+Python:
+	@property
+	Coroutines: await, async
+	PEP:
+		380
+		342
+		257
+	Libraries etc.: SQLAlchemy, Kite, Functools, Itertools (look: accumulate()), Logging, Scrapy,
+			PDB, Html.parser, Arrow, Tempfile, Requests, Itsdangerous, Cryptography,
+			
+Web:
+	UID, GID, SUID, SGID
+	HTTP, HTTPd, SMTP, SIP
+	MIME, POP3, INAP4, NNTP

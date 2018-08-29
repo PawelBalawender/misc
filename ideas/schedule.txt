@@ -1,0 +1,85 @@
+CEL: KONKRETNE UMIEJĘTNOŚCI, 24.08.2018 
+
+C:
+	The C Programming Language
+	Variadic Functions
+	Compile-time assert
+Elektronika:
+	Elektronika Dla Bystrzaków
+	@youtube GreatScott!
+Inwestycje:
+	[SYMULATOR] thinkorswim.com
+	[INFORMACJE] investopedia.com
+	[OMÓWIENIE]:
+		B. Graham, Intelligent Investor
+		Analiza techniczna dla bystrzaków
+		https://goldenmark.com/pl/mysaver/10-rad-dla-poczatkujacego-inwestora/
+
+
+
+Następnie:
+	W międzyczasie:
+		Metodologie TDD, BDD, DDD
+		Podejścia top-down i bottom-up
+		Wyrażenia regularne
+		Poznać skróty, polecenia, jak się używa:
+			-GDB
+			-PDB
+			-Git
+			-Vim
+			-PyCharm
+			-Bash
+		Dokumentowanie przy użyciu Doxygen, Sphinx (+Breathe) and Doctests
+		Jak używać korutyn w Pythonie?
+		Jak używać środowisk wirtualnych?
+		
+	Informatyka:
+		Asymptotyczne czasy wykonywania funkcji w Pythonie: sortowanie listy, list() na set() itd.
+		Algorytmy w C -> Haskellu
+			+Jak działają algorytmy kompresujące?
+			+Czym co kompresować?
+			+Problemy z "Projektu Euler"
+		Struktury danych w Javie -> C
+		Programowanie obiektowe w Pythonie -> C++
+		Programowanie funkcyjne w Pythonie -> Haskellu
+		Wątki i wykonywanie równoległe w C++ -> PonyLang
+		Wzorce projektowe w Pythonie -> C++
+		Profilowanie oprogramowania
+				
+		Zasady: SOLID, DRY, KISS, YAGNI, GRASP, EAFP
+		Książki:
+			Code Complete, S. McConell
+			The Pragmatic Programmer, A. Hunt, D.Thomas
+			Structure and Interpretation of Computer Programs, MIT
+			The C Programming Language, Kernighan, Ritchie
+			Introduction to Algorithms, Cormen, Leiserson, Rivest & Stein
+			Design Patterns, Gang of Four
+			The Art of Computer Programming, Donald Knuth
+			Clean Code: A Handbook of Agile Software Craftsmanship, Robert C. Martin
+			Real World Haskell
+		Kursy:
+			HarvardX CS50
+	
+	Poznawszy C:
+		Asembler na ARM (projekt: policzyć transformację Fouriera)
+	
+	Przy okazji robienia czegoś w C++:
+		Czym się różni heap od stacku
+		Czym się różni pointer od reference
+		Czym są metody, destruktory wirtualne?
+		Czym jest przeładowywanie operatorów?
+		Jak używać templates?
+		Do czego można użyć bibliotek z STL oraz Boost
+		Czym się różni wskaźnik na funkcję od tego na zmienną
+		Kiedy używać słowa kluczowego new
+		
+		Książki:
+			The Effective C++
+
+		
+Ogólnie o programowaniu:
+	"Przepisy" na kod: https://github.com/ActiveState/code
+Python:
+	Szeroko (idiomy, testy, porady):
+		http://ivory.idyll.org/articles/advanced-swc/
+		https://web.archive.org/web/20120118192448/http://jaynes.colorado.edu/PythonIdioms.html
