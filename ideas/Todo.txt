@@ -12,6 +12,10 @@ C:
 		-woltomierzem
 		-prostym oscyloskopem
 		-dałoby się zmierzyć pojemność dzięki temu oscyloskopowi?
+		Na STM, ze zmiennymi zakresami i w miarę pewny
+	
+	Funkcja dla STM do robienia benchmarków
+	
 
 Ogólnie:
 	Plugin do GDB (lub makro w C) ułatwiające ładne wyświetlenie całej struktury:
