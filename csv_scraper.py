@@ -39,6 +39,8 @@ from tkinter import filedialog
 import datetime
 import pathlib
 import locale
+import json
+import glob
 import csv
 import sys
 
@@ -46,6 +48,8 @@ DEFAULT_PATH = "C:/Users/Pawel/Desktop"
 DEFAULT_PATH = pathlib.Path(DEFAULT_PATH)
 FILE = "DaneTaty.csv"
 FILE = DEFAULT_PATH.joinpath(FILE)
+WEATHER_DATA_PATH = "D:/weather"
+WEATHER_FILENAME_FORMAT = "weather_{y}-{m:02}.json"
 
 LABELS = ('Outdoor temperature',
           'Supply temperature',
@@ -86,6 +90,7 @@ translations = {
     'Temperature on thermometer 3': 'Temperatura na termometrze 3',
     'Temperature on thermometer 4': 'Temperatura na termometrze 4',
     'Language not supported': 'Language not supported',  # it's an exceptional case
+    'Real temperatures': 'Realne temperatury',
 }
 
 
@@ -170,6 +175,56 @@ def _(msg: str) -> str:
         sys.exit()
 
 
+def months_range(y1, m1, y2, m2):
+    for year in range(y1, y2+1):
+        for month in range(1, 12+1):
+            if year == y1 and month < m1:
+                continue
+            if year == y2 and month > m2:
+                break
+            yield (year, month)
+
+
+def get_temperature_data(since: datetime.date, till: datetime.date):
+    def to_datetime(date, hour):
+        string = '{} {}'.format(date, hour.zfill(4))
+        return datetime.datetime.strptime(string, '%Y-%m-%d %H%M')
+    # fixme: it cuts 4 hours at the last month's day
+    first_day = since.day
+    last_day = till.day
+    first_month = since.year, since.month
+    last_month = till.year, till.month
+
+    base = pathlib.Path(WEATHER_DATA_PATH)
+
+    logs = []
+    r = list(months_range(*first_month, *last_month))
+    for year, month in r:
+        filename = WEATHER_FILENAME_FORMAT.format(y=year, m=month)
+        filename = base.joinpath(filename).absolute()
+        file = glob.glob(str(filename))[0]
+        with open(file) as doc:
+            logs += json.load(doc)
+    logs = ((to_datetime(i[0], i[1]), int(i[2])) for i in logs)
+
+    # now trim the logs we needn't\
+    new_logs = []
+    for i in logs:
+        if i[0].year == first_month[0]:
+            if i[0].month < first_month[1]:
+                continue
+            elif i[0].month == first_month[1] and i[0].day < first_day:
+                continue
+
+        if i[0].year == last_month[0]:
+            if i[0].month > last_month[1]:
+                break
+            elif i[0].month == last_month[1] and i[0].day > last_day:
+                break
+        new_logs.append(i)
+    return new_logs
+
+
 try:
     import matplotlib.pyplot as plt
     import matplotlib.dates as dates
@@ -246,6 +301,11 @@ print(_('Plot initialized'))
 for i, temps in enumerate(temperature_sets):
     print(_('Plotting: {}').format(_(LABELS[i])))
     ax.plot_date(timestamps, temps, '-', label=_(LABELS[i]))
+
+# now plot real outside temperatures
+real_temps = [temp for (_, temp) in get_temperature_data(timestamps[0].date(), timestamps[-1].date())]
+stamps = [timestamps[0] + datetime.timedelta(hours=i) for i in range(len(real_temps))]
+ax.plot_date(stamps, real_temps, '-', label=_('Real temperature'))
 
 # plt.subplots_adjust(top=0.9, bottom=0.2)
 fig.tight_layout()
