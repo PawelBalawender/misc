@@ -67,3 +67,10 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+
+@app.route('/msg')
+@login_required
+def message():
+    form = messages = None
+    return render_template('msg.html', title='Message', form=form, messages=messages)

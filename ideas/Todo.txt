@@ -1,5 +1,30 @@
 ﻿POMYSŁY NA PROJEKTY
 
+Back-end:
+	Napisać komunikator:
+		- Zaprojektować tabelę do trzymania rozmów
+		- Skonfigurować tę tabelę w aplikacji
+		- Zrobić migrację i upgrade bazy danych
+		- Napisać funkcje do:
+			* Pobrania listy kontaktów użytkownika
+			* Pobrania danej konwersacji
+			* Nadpisania konwersacji
+		- Zaprojektować formularz do pisania wiadomości
+		- Napisać template dla URI od komunikatora
+		- Skonfigurować route dla tego URI
+		
+		STAN: komunikator działa ->
+		- Napisać porzadne REST API na serwerze
+		- Stworzyć klient dla samego komunikatora, bez dostępu do innych danych użytkownika
+		- Wdrożyć tam OAuth
+		
+		STAN: komunikator i serwer autoryzacji działają ->
+		- Napisać klient do komunikatora na Androida
+		- Wdrożyć OpenID i komunikację po SSL / SSH
+		
+		STAN: back-end komunikatora i aplikacja działa ->
+		- Zrobić logowanie przez Facebooka
+
 C:
 	Funkcja dla STM ułatwiająca konfigurowanie GPIO:
 		>>> configure_GPIO(GPIOB, pins=[8, 9], ..., AF=1)
