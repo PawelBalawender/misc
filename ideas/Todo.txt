@@ -1,0 +1,69 @@
+﻿POMYSŁY NA PROJEKTY
+
+Back-end:
+	Napisać komunikator:
+		- Zaprojektować tabelę do trzymania rozmów
+		- Skonfigurować tę tabelę w aplikacji
+		- Zrobić migrację i upgrade bazy danych
+		- Napisać funkcje do:
+			* Pobrania listy kontaktów użytkownika
+			* Pobrania danej konwersacji
+			* Nadpisania konwersacji
+		- Zaprojektować formularz do pisania wiadomości
+		- Napisać template dla URI od komunikatora
+		- Skonfigurować route dla tego URI
+		
+		STAN: komunikator działa ->
+		- Napisać porzadne REST API na serwerze
+		- Stworzyć klient dla samego komunikatora, bez dostępu do innych danych użytkownika
+		- Wdrożyć tam OAuth
+		
+		STAN: komunikator i serwer autoryzacji działają ->
+		- Napisać klient do komunikatora na Androida
+		- Wdrożyć OpenID i komunikację po SSL / SSH
+		
+		STAN: back-end komunikatora i aplikacja działa ->
+		- Zrobić logowanie przez Facebooka
+
+C:
+	Funkcja dla STM ułatwiająca konfigurowanie GPIO:
+		>>> configure_GPIO(GPIOB, pins=[8, 9], ..., AF=1)
+		>>> configure_GPIO(GPIOB, pins=[13, 14], ..., AF=5)
+	Funkcja dla STM która potrafi policzyć timing dla I2C
+	
+	Stworzyć miernik uniwersalny z:
+		-omomierzem
+		-amperomierzem
+		-woltomierzem
+		-prostym oscyloskopem
+		-dałoby się zmierzyć pojemność dzięki temu oscyloskopowi?
+		Na STM, ze zmiennymi zakresami i w miarę pewny
+	
+	Funkcja dla STM do robienia benchmarków
+	
+
+Ogólnie:
+	Plugin do GDB (lub makro w C) ułatwiające ładne wyświetlenie całej struktury:
+		>>> print GPIOA
+		[IDR: 0xFF80, MODER: 0x00FF0123, ... ]
+	
+	Repozytorium Brown powinno wyglądać naukowo
+	Repozytorium Polynomial powinno wyglądać jak biblioteka / coś do instalowania i łatwego używania
+	Repozytorium Brainfuck tak samo
+	Repozytorium eggs powinno zawierać jakieś proste, czytelne skrypty z dobrą funkcjonalnością:
+		-Możliwość dodania kontekstu poprzez @:
+			>>> todo buy eggs @shop
+			>>> todo print @shop
+			['buy eggs', 'buy pasta']
+			>>> todo event 27.09.2018 Urodziny Martyny
+			>>> todo event 09.2018 Powinien przyjść list ze stypendium
+			>>> todo event 2017 Rok Henryka Sienkiewicza
+	Repozytorium misc powinno być fajne i ciekawe
+	
+		
+Projekty:	
+	-Android: aplikacja do fiszek
+	-MatrixCalc: wykorzystać publikację Gauus Elimination without division
+	-STM32:
+		-zrobić print do OpenOCD lub GDB
+		-
