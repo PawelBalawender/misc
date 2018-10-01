@@ -1,3 +1,32 @@
+Books:
+	"Mitologia nordycka", Neil Gaiman
+	"Mitologie świata" cycle, A. Kowalska, P.Górajec etc.
+	"Mitologia słowian", Gieysztor Aleksander
+	Greek, Roman, Egyptian, Nordic mythologies
+	https://pl.wikipedia.org/wiki/100_najlepszych_ksi%C4%85%C5%BCek_Norweskiego_Klubu_Ksi%C4%85%C5%BCki
+	"Państwo", Platon
+	"Manifest komunistyczny", K. Marks, F. Engels
+	"Wyznania (Confessions)", św. Augustyn
+	"Matematyczne zasady filozofii naturalnej", I. Newton
+	"The Traverl Diaries", A. Einstein, Ze'ev Rosenkranz (editor)
+	"The Tale of Genji", M. Shikibu
+	"Digital Desing and Computer Architecture", D. Harris, S. Harris
+	"CODE: The Hidden Language of Computer Hardware and Software", C. Petzold
+	"What every programmer should know about memory", https://lwn.net/Articles/250967/
+	"The Art of Assembly Language", R. Hyde
+	"The Art of Computer Programming", D. Knuth
+	"Structure and Interpretation of Computer Programs",
+		interactive: https://xuanji.appspot.com/isicp/
+
+Movies:
+	Clerks - Sprzedawcy
+	Django: Unchained
+	Netflix: Kaos series
+
+In-painting
+Ramer-Douglas-Peucker algorithm
+K-means algorithm
+LL parser
 Strong, extremely strong, weak, static, dynamic typing
 Paradigms: imperative, functional, object-oriented, declarative, etc.
 Branch predictor
@@ -34,6 +63,7 @@ C++:
 	Boost
 
 Python:
+	super() and @staticmethod: https://stackoverflow.com/questions/26788214/super-and-staticmethod-interaction
 	@property
 	Coroutines: await, async
 	PEP:
