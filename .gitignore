@@ -1,5 +1,14 @@
-.idea/*
+.idea
+*/.idea
 __pycache__/*
 *.out
 *.exe
 weather/*
+*/CMakeLists.txt
+*/cmake-build-debug
+build/*
+dist/*
+config.json
+translations.json
+#?
+*.spec
