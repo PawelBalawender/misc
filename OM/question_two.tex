@@ -1,0 +1,62 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsfonts}
+\usepackage{siunitx}
+\usepackage{textcomp}
+
+\usepackage{graphicx}
+\usepackage{calc}
+\newlength{\depthofsumsign}
+\setlength{\depthofsumsign}{\depthof{$\sum$}}
+\newlength{\totalheightofsumsign}
+\newlength{\heightanddepthofargument}
+
+\newcommand{\nsum}[1][1.4]{
+    \mathop{
+        \raisebox
+            {-#1\depthofsumsign+1\depthofsumsign}
+            {\scalebox
+                {#1}
+                {$\displaystyle\sum$}
+            }
+    }
+}
+
+\selectlanguage{polish}
+
+\title{Zadanie 1.}
+\date{29 września 2018}
+\author{Paweł Balawender}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem}\
+Wysokości nierównoramiennego, ostrokątnego trójkąta $ABC$ przecinają się w punkcie $H$. Punkt $S$ jest środkiem tego łuku $BC$ okręgu opisanego na trójkącie $BCH$, który zawiera punkt $H$. Wyznaczyć miarę kąta $BAC$, jeśli spełniona jest równość $AH = AS$.
+
+\section*{Rozwiązanie}
+Przyjmijmy, bez straty ogólności, następującą modyfikację modelu:\\
+punkt $H$ nie jest przecięciem się wysokości trójkąta $ABC$, a punktem przecięcia półprostych wychodzących z jego wierzchołków.
+Oznaczmy przez $O$ środek okręgu opisanego na trójkącie $BHC$, przez $D$ punkt przecięcia odcinków $BC$ i $SO$, a przez $A'$, $B'$ i $C'$ punkty przecięcia półprostych wychodzących
+odpowiednio z punktów $A$, $B$ i $C$, przechodzących przez punkt $H$.
+W pierwotnym modelu półproste te byłyby wysokościami trójkąta, szukamy więc taki takiej wartości kąta $BAC$, dla której kąty $AA'B$, $BB'C$ i $CC'A$ są proste.
+
+Zauważmy, że gdy $SD = DO$, to też $SO = BO = CO$ oraz odcinek $BC$ jest symetralną promienia $SO$, więc trójkąty $BSO$ i $OSC$ są równoboczne, a kąt $BSC=\ang{120}$.
+Ponadto $\angle BHC = \angle BSC$, bo kąty te są oparte na tym samym łuku, a więc $BHC = \ang{120}$.
+Jeśli $SD > DO$, $BHC < \ang{120}$, a jeśli $SD<DO$, $BHC>\ang{120}$.
+
+Skoro $AH=AS$ oraz $OH=OS$, czworobok $AHOS$ jest deltoidem, a prosta wyznaczona przez punkty $HS$ dwusieczną kąta $\angle AHO \equiv \angle ASO$
+
+Zauważmy, że dla $SD>DO$, kąt $\angle BB'C$ zawsze będzie mniejszy niż $\ang{90}$,\\
+natomiast dla $SD<DO$, kąt $\angle BB'C$ zawsze jest większy niż $\ang{90}$.
+
+Jedyną więc sytuacją, w której kąt BB'C ma miarę \ang{90}, jest sytuacja, w której $SD=DO$, czyli $BHC \equiv BOC = \ang{120}$.
+
+Z własności kąta opartego na łuku, którego wierzchołek leży na zewnątrz okręgu wiemy, że $\angle BAC = 1/2((\ang{360} - \angle BOC) - \angle BOC) = 1/2(\ang{360} - 2 \angle BOC) = \ang{180} -\angle BOC$
+Z czego wynika, że $\angle BAC = \ang{60}$.
+\end{document}

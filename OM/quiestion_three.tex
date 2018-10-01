@@ -1,0 +1,55 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsfonts}
+
+\usepackage{graphicx}
+\usepackage{calc}
+\newlength{\depthofsumsign}
+\setlength{\depthofsumsign}{\depthof{$\sum$}}
+\newlength{\totalheightofsumsign}
+\newlength{\heightanddepthofargument}
+
+\newcommand{\nsum}[1][1.4]{
+    \mathop{
+        \raisebox
+            {-#1\depthofsumsign+1\depthofsumsign}
+            {\scalebox
+                {#1}
+                {$\displaystyle\sum$}
+            }
+    }
+}
+
+\selectlanguage{polish}
+
+\title{Zadanie 1.}
+\date{29 września 2018}
+\author{Paweł Balawender}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem}
+$P(x) = 0 \land Q(x) = 0 \land x \notin \mathbb{Q}$\\
+$\iff P(x) = Q(x) \land Q(x) = 0 \land x \notin \mathbb{Q}$\\
+$\iff x^3+ax^2+bx+c = x^3+bx^2+cx+a \land Q(x)=0 \land x \notin\mathbb{Q}$\\
+$\iff a(x^2 - 1) + bx(1 - x) + c(1 - x) = 0 \land Q(x) = 0 \land x \notin \mathbb{Q}$\\
+$\iff a(x+1)(x-1) - bx(x-1) - c(x-1) = 0$\\
+$\iff (x-1)[a(x+1) -bx -c] = 0$\\
+$\iff (x-1 = 0 \lor a(x+1)-bx-c = 0) $\\
+$\iff (x = 1 \land Q(x) = 0 \land x \notin \mathbb{Q}) \lor (a(x+1)-bx-c=0 \land Q(x) = 0 \land x \notin \mathbb{Q})$\\
+$\iff ax+a-bx-c=0 \land Q(x) = 0 \land x \notin \mathbb{Q}$\\
+$\iff (a-b)x + a - c = 0 \land Q(x) = 0 \land x \notin \mathbb{Q}$\\
+
+Teraz, skoro a, b i c są wymierne, to również a-b oraz a-c są wymierne. Iloczyn liczby wymiernej i niewymiernej jest liczbą niewymierną. Suma liczby wymiernej i niewymiernej jest liczbą niewymierną.
+Zero jest wymierne, równość ta będzie więc spełniona tylko wtedy, gdy a-b = 0 = a-c, czyli b=c, co jest sprzeczne z treścią zadania.
+
+Sprzeczność ta dowodzi, że nie istnieją takie trójki liczb a, b, c.
+
+
+\end{document}
