@@ -1,4 +1,5 @@
-\documentclass[11pt]{article}
+\documentclass[12pt]{article}
+\usepackage[left=2cm, right=5cm, top=2cm]{geometry}
 
 \usepackage[T1]{fontenc}
 \usepackage[polish]{babel}
@@ -7,56 +8,65 @@
 \usepackage{amsfonts}
 \usepackage{siunitx}
 \usepackage{textcomp}
-
-\usepackage{graphicx}
-\usepackage{calc}
-\newlength{\depthofsumsign}
-\setlength{\depthofsumsign}{\depthof{$\sum$}}
-\newlength{\totalheightofsumsign}
-\newlength{\heightanddepthofargument}
-
-\newcommand{\nsum}[1][1.4]{
-    \mathop{
-        \raisebox
-            {-#1\depthofsumsign+1\depthofsumsign}
-            {\scalebox
-                {#1}
-                {$\displaystyle\sum$}
-            }
-    }
-}
+\usepackage{ragged2e}
 
 \selectlanguage{polish}
+
 
 \title{Zadanie 1.}
 \date{29 września 2018}
 \author{Paweł Balawender}
 
 \begin{document}
-
 \maketitle
 
-\section*{Problem}\
-Wysokości nierównoramiennego, ostrokątnego trójkąta $ABC$ przecinają się w punkcie $H$. Punkt $S$ jest środkiem tego łuku $BC$ okręgu opisanego na trójkącie $BCH$, który zawiera punkt $H$. Wyznaczyć miarę kąta $BAC$, jeśli spełniona jest równość $AH = AS$.
+\section*{Problem}
+\begin{justify}
+Wysokości nierównoramiennego, ostrokątnego trójkąta $ABC$ przecinają się \linebreak
+w punkcie $H$. Punkt $S$ jest środkiem tego łuku $BC$ okręgu opisanego na trójkącie
+$BCH$, który zawiera punkt $H$. Wyznaczyć miarę kąta $BAC$, jeśli spełniona jest
+równość $AH = AS$.
 
 \section*{Rozwiązanie}
-Przyjmijmy, bez straty ogólności, następującą modyfikację modelu:\\
-punkt $H$ nie jest przecięciem się wysokości trójkąta $ABC$, a punktem przecięcia półprostych wychodzących z jego wierzchołków.
-Oznaczmy przez $O$ środek okręgu opisanego na trójkącie $BHC$, przez $D$ punkt przecięcia odcinków $BC$ i $SO$, a przez $A'$, $B'$ i $C'$ punkty przecięcia półprostych wychodzących
-odpowiednio z punktów $A$, $B$ i $C$, przechodzących przez punkt $H$.
-W pierwotnym modelu półproste te byłyby wysokościami trójkąta, szukamy więc taki takiej wartości kąta $BAC$, dla której kąty $AA'B$, $BB'C$ i $CC'A$ są proste.
 
-Zauważmy, że gdy $SD = DO$, to też $SO = BO = CO$ oraz odcinek $BC$ jest symetralną promienia $SO$, więc trójkąty $BSO$ i $OSC$ są równoboczne, a kąt $BSC=\ang{120}$.
-Ponadto $\angle BHC = \angle BSC$, bo kąty te są oparte na tym samym łuku, a więc $BHC = \ang{120}$.
-Jeśli $SD > DO$, $BHC < \ang{120}$, a jeśli $SD<DO$, $BHC>\ang{120}$.
+Kąt ten ma miarę \ang{60}.
 
-Skoro $AH=AS$ oraz $OH=OS$, czworobok $AHOS$ jest deltoidem, a prosta wyznaczona przez punkty $HS$ dwusieczną kąta $\angle AHO \equiv \angle ASO$
+\section*{Dowód}
+B', C': spodki wysokości trójkąta ABC opuszczonych z wierzchołków B, C. \linebreak
+Cechy kątów w trójkącie $B'CH$:
+\begin{equation}\ang{90} + |B'CH| + |B'HC| = \ang{180}\end{equation}
+\begin{equation} |B'HC| = \ang{180} - \ang{90} - |B'CH| \end{equation}
+Punkty $A$, $B'$ i $C$ są współliniowe, podobnie jak $C$, $H$ i $C'$, więc:
+\begin{equation}|B'CH| = |ACC'|\end{equation}
+Cechy kątów w trójkącie $ACC'$:
+\begin{equation}\ang{90} + |C'AC| + |ACC'|\end{equation}
+\begin{equation}C'AC \equiv BAC = \ang{180} - \ang{90} - |ACC'|\end{equation}
+Z równań (5) oraz (3) wynika:
+\begin{equation}BAC \equiv B'HC\end{equation}
+Kontynuując:
+\begin{equation}|BAC| = |B'HC| = \ang{180} - |BHC|\end{equation}
+Skoro kąty $BHC$ i $BSC$ są oparte na tym samym łuku:
+\begin{equation}BHC \equiv BSC\end{equation}
+Ponadto możemy zastosować wzór na miarę kąta opartego na łuku którego wierzchołek leży poza okręgiem:
+\begin{equation}|BAC| = 1/2((\ang{360} - |BOC|) - |BOC|)\end{equation}
+\begin{equation}|BAC| = \ang{180} - |BOC|\end{equation}
+Korzystając z równości (7) i (9):
+\begin{equation}BOC \equiv BHC\end{equation}
+Korzystając z równości (8) i (11):
+\begin{equation}BSC \equiv BOC\end{equation}
 
-Zauważmy, że dla $SD>DO$, kąt $\angle BB'C$ zawsze będzie mniejszy niż $\ang{90}$,\\
-natomiast dla $SD<DO$, kąt $\angle BB'C$ zawsze jest większy niż $\ang{90}$.
+Odcinek $SO$ jest dwusieczną kątów $BOC$ oraz $BSC$, więc trójkąty $BSO$ oraz $CSO$ są równoramienne:
+\begin{equation}|BS| = |BO| \land |CS| = |CO|\end{equation}
+Ponadto, skoro punkty $B$, $S$ i $C$ leżą na jednym okręgu to:
+\begin{equation}|OB| = |OS| \land |OC| = |OS|\end{equation}
+Korzystając z równości (13) i (14):
+\begin{equation}|OB| = |BS| = |SO| \land |CS| = |SO| = |CS|\end{equation}
+Skoro trójkąty $BSO$ i $CSO$ są równoboczne i, jak wyżej wspomniane, $|SO|$ to dwusieczna $BSC$:
+\begin{equation}|BSC| = 2 * \deg{60} = \deg{120}\end{equation}
+Następnie korzystając z (10) i (12):
+\begin{equation}|BAC| = \ang{180} - |BOC| = \ang{180} - |BSC|\end{equation}
+I korzystając z (16) i (17):
+\begin{equation}|BAC| = \ang{180} - \ang{120} = \ang{60}\end{equation}
 
-Jedyną więc sytuacją, w której kąt BB'C ma miarę \ang{90}, jest sytuacja, w której $SD=DO$, czyli $BHC \equiv BOC = \ang{120}$.
-
-Z własności kąta opartego na łuku, którego wierzchołek leży na zewnątrz okręgu wiemy, że $\angle BAC = 1/2((\ang{360} - \angle BOC) - \angle BOC) = 1/2(\ang{360} - 2 \angle BOC) = \ang{180} -\angle BOC$
-Z czego wynika, że $\angle BAC = \ang{60}$.
+\end{justify}
 \end{document}
