@@ -1,11 +1,12 @@
 \documentclass[11pt]{article}
 
+\usepackage[left=2cm, right=5cm, top=2cm]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[polish]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage{amsfonts}
-
+\usepackage{ragged2e}
 \usepackage{graphicx}
 \usepackage{calc}
 \newlength{\depthofsumsign}
@@ -31,25 +32,30 @@
 \author{Paweł Balawender}
 
 \begin{document}
-
 \maketitle
 
 \section*{Problem}
-$P(x) = 0 \land Q(x) = 0 \land x \notin \mathbb{Q}$\\
-$\iff P(x) = Q(x) \land Q(x) = 0 \land x \notin \mathbb{Q}$\\
-$\iff x^3+ax^2+bx+c = x^3+bx^2+cx+a \land Q(x)=0 \land x \notin\mathbb{Q}$\\
-$\iff a(x^2 - 1) + bx(1 - x) + c(1 - x) = 0 \land Q(x) = 0 \land x \notin \mathbb{Q}$\\
-$\iff a(x+1)(x-1) - bx(x-1) - c(x-1) = 0$\\
-$\iff (x-1)[a(x+1) -bx -c] = 0$\\
-$\iff (x-1 = 0 \lor a(x+1)-bx-c = 0) $\\
-$\iff (x = 1 \land Q(x) = 0 \land x \notin \mathbb{Q}) \lor (a(x+1)-bx-c=0 \land Q(x) = 0 \land x \notin \mathbb{Q})$\\
-$\iff ax+a-bx-c=0 \land Q(x) = 0 \land x \notin \mathbb{Q}$\\
-$\iff (a-b)x + a - c = 0 \land Q(x) = 0 \land x \notin \mathbb{Q}$\\
-
-Teraz, skoro a, b i c są wymierne, to również a-b oraz a-c są wymierne. Iloczyn liczby wymiernej i niewymiernej jest liczbą niewymierną. Suma liczby wymiernej i niewymiernej jest liczbą niewymierną.
-Zero jest wymierne, równość ta będzie więc spełniona tylko wtedy, gdy a-b = 0 = a-c, czyli b=c, co jest sprzeczne z treścią zadania.
-
-Sprzeczność ta dowodzi, że nie istnieją takie trójki liczb a, b, c.
-
-
+\begin{justify}
+Rozstrzygnąć, czy istnieją takie parami różne liczby wymierne $a$, $b$, $c$, że wielomiany
+$P(x) = x^3 + ax^2 + bx + c$\quad i\quad$Q(x) = x^3 + bx^2 + cx + a$
+mają wspólny pierwiastek niewymierny.
+\section*{Rozwiązanie}
+Nie.
+\section*{Dowód}
+\begin{equation}P(x) = 0 \quad\land\quad Q(x) = 0 \land x \notin \mathbb{Q}\end{equation}
+\begin{equation}P(x) = Q(x) \quad\land\quad Q(x) = 0 \land x \notin \mathbb{Q}\end{equation}
+\begin{equation}x^3+ax^2+bx+c = x^3+bx^2+cx+a \quad\land\quad Q(x)=0 \land x \notin\mathbb{Q}\end{equation}
+\begin{equation}a(x^2 - 1) + bx(1 - x) + c(1 - x) = 0 \quad\land\quad Q(x) = 0 \land x \notin \mathbb{Q}\end{equation}
+\begin{equation}a(x+1)(x-1) - bx(x-1) - c(x-1) = 0 \quad\land\quad Q(x) = 0 \land x \notin \mathbb{Q}\end{equation}
+\begin{equation}(x-1)(a(x+1) -bx -c) = 0 \quad\land\quad Q(x) = 0 \land x \notin \mathbb{Q}\end{equation}
+\begin{equation}(x-1 = 0 \quad\lor\quad a(x+1)-bx-c = 0) \quad\land\quad Q(x) = 0 \land x \notin \mathbb{Q}\end{equation}
+\begin{equation}(x = 1 \land Q(x) = 0 \land x \notin \mathbb{Q})\quad \lor\quad (a(x+1)-bx-c=0 \land Q(x) = 0 \land x \notin \mathbb{Q})\end{equation}
+\begin{equation}ax+a-bx-c=0 \quad\land\quad Q(x) = 0 \land x \notin \mathbb{Q}\end{equation}
+\begin{equation}(a-b)x + a - c = 0 \quad\land\quad Q(x) = 0 \land x \notin \mathbb{Q}\end{equation}
+Skoro liczby $a$, $b$ i $c$ są wymierne, to zdanie to będzie prawdziwe tylko wtedy, gdy:
+\begin{equation}a-b=0 \quad\land\quad a-c=0\end{equation}
+Wtedy:
+\begin{equation}a=b\end{equation}
+Co jest sprzeczne z warunkami zadania - liczby muszą być parami różne.
+\end{justify}
 \end{document}
