@@ -36,11 +36,11 @@ flash:
 	$(ARM_NONE_EABI_GDB) -x scripts/flash.gdb
 
 compile:
-	$(ARM_NONE_EABI_GCC) -std=c99 -g3 -Os -Wall -Wextra -mcpu=cortex-m0 -mlittle-endian -mthumb -I$(INCLUDE) -I$(CMSIS_CORE) -DSTM32F091xC -c $(SOURCE) -o $(SOURCE_O)
-	$(ARM_NONE_EABI_GCC) -std=c99 -g3 -Os -Wall -Wextra -mcpu=cortex-m0 -mlittle-endian -mthumb -I$(INCLUDE) -I$(CMSIS_CORE) -DSTM32F091xC -c $(STARTUP) -o $(STARTUP_O)
-	$(ARM_NONE_EABI_GCC) -std=c99 -g3 -Os -Wall -Wextra -mcpu=cortex-m0 -mlittle-endian -mthumb -I$(INCLUDE) -I$(CMSIS_CORE) -DSTM32F091xC -c $(SYSTEM) -o $(SYSTEM_O)	
-	$(ARM_NONE_EABI_GCC) -std=c99 -g3 -Os -Wall -Wextra -mcpu=cortex-m0 -mlittle-endian -mthumb -I$(INCLUDE) -I$(CMSIS_CORE) -DSTM32F091xC -c src/common.c -o dest/common.o
-	$(ARM_NONE_EABI_GCC) -std=c99 -g3 -Os -Wall -Wextra -mcpu=cortex-m0 -mlittle-endian -mthumb -I$(INCLUDE) -I$(CMSIS_CORE) -DSTM32F091xC -c src/configure.c -o dest/configure.o
+	$(ARM_NONE_EABI_GCC) -std=c99 -g3 -O0 -Wall -Wextra -mcpu=cortex-m0 -mlittle-endian -mthumb -I$(INCLUDE) -I$(CMSIS_CORE) -DSTM32F091xC -c $(SOURCE) -o $(SOURCE_O)
+	$(ARM_NONE_EABI_GCC) -std=c99 -g3 -O0 -Wall -Wextra -mcpu=cortex-m0 -mlittle-endian -mthumb -I$(INCLUDE) -I$(CMSIS_CORE) -DSTM32F091xC -c $(STARTUP) -o $(STARTUP_O)
+	$(ARM_NONE_EABI_GCC) -std=c99 -g3 -O0 -Wall -Wextra -mcpu=cortex-m0 -mlittle-endian -mthumb -I$(INCLUDE) -I$(CMSIS_CORE) -DSTM32F091xC -c $(SYSTEM) -o $(SYSTEM_O)	
+	$(ARM_NONE_EABI_GCC) -std=c99 -g3 -O0 -Wall -Wextra -mcpu=cortex-m0 -mlittle-endian -mthumb -I$(INCLUDE) -I$(CMSIS_CORE) -DSTM32F091xC -c src/common.c -o dest/common.o
+	$(ARM_NONE_EABI_GCC) -std=c99 -g3 -O0 -Wall -Wextra -mcpu=cortex-m0 -mlittle-endian -mthumb -I$(INCLUDE) -I$(CMSIS_CORE) -DSTM32F091xC -c src/configure.c -o dest/configure.o
 	
 	$(ARM_NONE_EABI_GCC) -std=c99 -mcpu=cortex-m0 -mlittle-endian -mthumb -DSTM32F091xC -T$(LINKER) -Wl,--gc-sections $(SOURCE_O)  $(STARTUP_O) $(SYSTEM_O) dest/common.o dest/configure.o dest/trig.o -o $(OUT_ELF)
 	$(ARM_NONE_EABI_OBJCOPY) -Oihex $(OUT_ELF) $(OUT_HEX)
