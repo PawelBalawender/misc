@@ -2,18 +2,27 @@
 #include"common.h"
 
 void configure_TIM2(void);
-void TIM2_IRQHandler(void);
+extern void TIM2_IRQHandler(void);
 
 
 int main() {
+    __asm__ __volatile__(".global TIM2_IRQHandler\n" \
+            "gpioa_addr: .word 0x48000000\n" \
+            "LDR R0, gpioa_addr\n" \
+            "MOV R2, #0x20\n" \
+            "STR R2, [R0]\n");
+
     RCC->AHBENR |= RCC_AHBENR_GPIOAEN;
     GPIOA->MODER |= GPIO_MODER_MODER5_0;
 
     configure_TIM2();
     blink();
 
-    while (1) {
+    __asm__ volatile("mov r0, #7");
+    register volatile int r0 __asm__("r0");
 
+    while (1) {
+        // blink();
     }
 }
 
@@ -63,12 +72,18 @@ void configure_TIM2(void) {
     /* ENABLE TIMER */
     TIM2->CR1 |= TIM_CR1_CEN;
 }
-
-
+/*
+#define TIM2_IRQHandler() \
+({ \
+*/
+/*\
+})
+*/
+/*
 void TIM2_IRQHandler(void) {
     if (TIM2->SR & TIM_SR_UIF) {
         blink();
         TIM2->SR &= ~TIM_SR_UIF;
     }
-}
+}*/
 
