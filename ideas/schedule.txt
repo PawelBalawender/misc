@@ -1,4 +1,4 @@
-CEL: KONKRETNE UMIEJĘTNOŚCI, 24.08.2018 
+CEL: KONKRETNE UMIEJĘTNOŚCI, 24.08.2018
 
 C:
 	The C Programming Language
@@ -32,7 +32,7 @@ Następnie:
 		Dokumentowanie przy użyciu Doxygen, Sphinx (+Breathe) and Doctests
 		Jak używać korutyn w Pythonie?
 		Jak używać środowisk wirtualnych?
-		
+
 	Informatyka:
 		Asymptotyczne czasy wykonywania funkcji w Pythonie: sortowanie listy, list() na set() itd.
 		Algorytmy w C -> Haskellu
@@ -45,7 +45,7 @@ Następnie:
 		Wątki i wykonywanie równoległe w C++ -> PonyLang
 		Wzorce projektowe w Pythonie -> C++
 		Profilowanie oprogramowania
-				
+
 		Zasady: SOLID, DRY, KISS, YAGNI, GRASP, EAFP
 		Książki:
 			Code Complete, S. McConell
@@ -59,10 +59,10 @@ Następnie:
 			Real World Haskell
 		Kursy:
 			HarvardX CS50
-	
+
 	Poznawszy C:
 		Asembler na ARM (projekt: policzyć transformację Fouriera)
-	
+
 	Przy okazji robienia czegoś w C++:
 		Czym się różni heap od stacku
 		Czym się różni pointer od reference
@@ -71,12 +71,12 @@ Następnie:
 		Jak używać templates?
 		Do czego można użyć bibliotek z STL oraz Boost
 		Czym się różni wskaźnik na funkcję od tego na zmienną
-		Kiedy używać słowa kluczowego new
-		
+		Kiedy używać słów kluczowych new i delete
+
 		Książki:
 			The Effective C++
 
-		
+
 Ogólnie o programowaniu:
 	"Przepisy" na kod: https://github.com/ActiveState/code
 Python:

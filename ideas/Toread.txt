@@ -61,6 +61,11 @@ C++:
 	Pointers
 	STL
 	Boost
+    Destruktor i konstruktor wirtualny
+    Metody wirtualne
+    Templates
+    Przeładowywanie operatorów
+    "The effective C++"
 
 Python:
 	super() and @staticmethod: https://stackoverflow.com/questions/26788214/super-and-staticmethod-interaction
@@ -72,7 +77,7 @@ Python:
 		257
 	Libraries etc.: SQLAlchemy, Kite, Functools, Itertools (look: accumulate()), Logging, Scrapy,
 			PDB, Html.parser, Arrow, Tempfile, Requests, Itsdangerous, Cryptography,
-			
+
 Web:
 	UID, GID, SUID, SGID
 	HTTP, HTTPd, SMTP, SIP

@@ -1,0 +1,142 @@
+problemy z project euler
+diveintopython
+pycon
+
+libs:
+twisted
+dis
+libs
+
+distinguish:
+sql
+mysql
+nosql
+postgresql
+mongodb
+mariadb
+
+know:
+regex
+
+use:
+profiling tool
+test-coverage checking
+
+book:
+principles, ray dalio
+
+skroty znac:
+arm
+avr
+x86
+openocd
+jtag
+pwm
+uart
+usart
+i2c
+cmsis
+hal
+nvic
+mpu
+fpu
+irq
+irqn
+itm
+dwt
+ll
+rtos
+tcp/ip
+pop/imap
+mcu
+stm
+rtos
+mdk
+tcl
+eab
+
+kultura:
+marian kruczek
+bronisław naczas
+gielniak
+kantor
+mieczysław porębski
+tadeusz brzozowski
+władysław hasior
+dziennik fonetyczny beksińskich
+diariusze zdzisława beksińskiego
+s184, s186 w "Beksińscy"
+audycje tomasza beksinskiego
+the who, the doors, presley stones, quadrophenia,
+jimi hendrix, joplin janin, fellini, hommeage a beksinski
+malarz: constable
+pisarz: oskar wilde
+vermeer "mleczarka"
+
+emocje:
+thomas willis, anatom
+thomas brown
+robert burton
+paul ekman
+"Pan-Cultural Elements in Facial Displays of Emotion", Science, 4.04.1969, nr 164, s. 86-88
+darwin - kronika uczuć "o wyrazie uczuć u człowieka i zwierząt"
+li chi, kodeks
+rene descartes, 6 podstawowych emocji
+FACS
+plemie Baining z papui nowej gwinei
+plemie Pintupi z Australii Zacvhodniej
+apatia, acedia, ringxiety, ngulu, umpty, matutolypea, basoreksja, gezelligheid, afektacja, ilinx
+OCEAN
+scifun - film o bledach poznawczych
+tagore "rabindranatha"
+badanie: Kevin Haley, Daniel Fessler 2005, oczy a odpowiedzialnosc
+metoda Eulera
+
+rozne:
+księga szkocka
+amelia earhart
+kiergard
+iktsuarpok
+sigmunt freud, neurastenic
+billie holiday, lukrowana boleść
+margaret cavendish
+burton o melancholii
+genji monogatari
+murasaki shikibu
+wabi-sabu
+jane fajons "they make themselves" o plemieniu beining
+dostojewski "idiota"
+'l'hotel', sophie calle
+cody stanton
+frederich douglas
+gulia gillard
+alice agres
+eksperyment harlowa z rezusami i frotte, zdjęcia!
+schultz "fistaszki"
+apofenia
+Hipokrates
+dekadencja
+makiawelizm
+animozja
+testosteron
+epinefryna
+noradrenalina
+adrenalina
+kortyzol
+cele SMART
+zygmunt kałużyński "podróż na zachód"
+matematyczne podsatwy filozofii przyrody
+
+ideas:
+loteria kFantowa
+elektronowolty zamiast kcal
+skarpetuum mobile
+
+app:
+tłumacz emocji kota
+słowa -> pierwiastki
+zdjęcia -> piksele dużęgo zdjęcia
+symulator sznurka
+find your vibe, mapa emocji jak paleta kolorow
+facebook message counter
+
