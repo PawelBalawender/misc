@@ -6,7 +6,8 @@ if __name__ == '__main__':
     for i in a:
         x = b.find(i, ind)
         if x != -1:
-            ind = x
+            ind = x+1
             s += i
+        if ind>=len(b):break
     print(s)
 
