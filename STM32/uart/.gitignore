@@ -1,0 +1,10 @@
+# Custom
+dest/*
+
+# Vi
+.*.sw*
+
+# CLion
+build/*
+.idea/*
+cmake-build-debug/*
