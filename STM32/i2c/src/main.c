@@ -36,14 +36,16 @@ int main() {
 
     while(1) {
         if (I2C1->ISR & I2C_ISR_TXE) {
-        I2C1->TXDR = (uint8_t)'A';
-        I2C1->CR2 |= I2C_CR2_START;
+        //I2C1->TXDR = (uint8_t)'A';
+        //I2C1->CR2 |= I2C_CR2_START;
         }
 
         if (I2C2->ISR & I2C_ISR_ADDR) I2C2->ICR |= I2C_ICR_ADDRCF;
         if (I2C2->ISR & I2C_ISR_RXNE) {
             I2C2->RXDR;
         }
+
+        delay(1000);
     }
 
     return 0;
@@ -51,7 +53,7 @@ int main() {
 
 void delay(volatile unsigned int time) {
     n = time;
-    while (n) asm("nop");
+    while (n) __NOP();
 }
 
 void configure_RCC(void) {
