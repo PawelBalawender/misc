@@ -1,6 +1,8 @@
 problemy z project euler
 diveintopython
 pycon
+hack.cert.com
+spektrogram do wokalizacji
 
 libs:
 twisted
@@ -53,9 +55,11 @@ stm
 rtos
 mdk
 tcl
-eab
+eabi
 
 kultura:
+Django
+Sprzedawcy
 marian kruczek
 bronisław naczas
 gielniak
@@ -85,7 +89,7 @@ rene descartes, 6 podstawowych emocji
 FACS
 plemie Baining z papui nowej gwinei
 plemie Pintupi z Australii Zacvhodniej
-apatia, acedia, ringxiety, ngulu, umpty, matutolypea, basoreksja, gezelligheid, afektacja, ilinx
+apatia, acedia, ringxiety, ngulu, umpty, matutolypea, basoreksja, gezelligheid, afektacja, ilinx, abhiman, balam
 OCEAN
 scifun - film o bledach poznawczych
 tagore "rabindranatha"
@@ -93,6 +97,16 @@ badanie: Kevin Haley, Daniel Fessler 2005, oczy a odpowiedzialnosc
 metoda Eulera
 
 rozne:
+cele SMART
+dekadencja
+makiawelizm
+animozja
+Cody Stanton
+Frederich Douglass
+Julia Gilard
+Alice Agres
+kodeks li chi
+rene descartes, 6 podstawowych emocji
 księga szkocka
 amelia earhart
 kiergard
@@ -106,6 +120,10 @@ murasaki shikibu
 wabi-sabu
 jane fajons "they make themselves" o plemieniu beining
 dostojewski "idiota"
+'pan-cultural elements in facial displays of emotion', 'science', 4.04.1969,
+    nr 164, s. 86-88
+FACS
+darwin - kronika uczuć; 'o wyrazie uczuc u czlowieka i zwierzat'
 'l'hotel', sophie calle
 cody stanton
 frederich douglas

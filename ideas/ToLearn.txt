@@ -17,6 +17,13 @@ DDD
 unittesting
 czemu moje testy sa takie slkabe
 
+PyCUDA
+Twisted
+coroutines
+functools
+itertools
+GDB, PDB, git, vim, PyCharm, bash, Sphinx, Doxygen
+
 kursy teraz:
 khan academy: matematyka, fizyka
 elektronika: ksiazka
