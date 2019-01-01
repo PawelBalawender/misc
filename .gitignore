@@ -1,3 +1,4 @@
+*.elf
 .gdb_history
 *.e
 .idea
