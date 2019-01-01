@@ -1,12 +1,11 @@
-srcs := $(wildcard *.s)
-objs := $(srcs: .c = .o)
+f = array
+all: $(f).elf
 
-all: $(objs)
-	gcc $< -o $@
+$(f).elf: $(f).o
+	gcc -o $@ $+
 
-$(objs): $(srcs)
-	as $^ -o $@
+$(f).o: $(f).s
+	as -o $@ $<
 
 clean:
 	rm -vf *.o *.out *.elf
-
