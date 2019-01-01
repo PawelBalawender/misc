@@ -7,11 +7,25 @@ the same, still correct, Brainfuck code, but in the shape of
 the particular chars from the short string.
 """
 import subprocess
+import sys
 
 from PIL import Image, ImageFont
 import numpy as np
 
-# user data:
+# setup environment
+try:
+    input_file = sys.argv[1]
+except IndexError:
+    print('Usage: BFFormatter.py <input-file>')
+    sys.exit(1)
+
+try:
+    with open(input_file) as doc:
+        source_code = doc.read()
+except FileNotFoundError:
+    print('No such file:', input_file)
+    sys.exit(1)
+
 source_code = ''
 text = 'Hello'
 font_path = './ttf-bitstream-vera/Vera.ttf'
