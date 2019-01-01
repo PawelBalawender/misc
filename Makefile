@@ -1,4 +1,4 @@
-f = array
+f = printf
 all: $(f).elf
 
 $(f).elf: $(f).o
