@@ -1,3 +1,4 @@
+/* calc.s; maximum result: 255 */
 .text
 .global main
 main:
@@ -5,7 +6,7 @@ main:
 	mov r2, #1
 
 loop:
-	cmp r2, #22
+	cmp r2, #100
 	bgt end
 	add r1, r1, r2
 	add r2, r2, #1
