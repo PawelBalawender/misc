@@ -1,4 +1,4 @@
-f = hello_syscall_2
+f = call_arm_from_thumb
 all: $(f).elf
 
 $(f).elf: $(f).o
