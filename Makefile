@@ -1,4 +1,4 @@
-f = div_14
+f = hello_syscall_2
 all: $(f).elf
 
 $(f).elf: $(f).o
