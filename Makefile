@@ -1,4 +1,4 @@
-f = calc_better_loop
+f = mul64
 all: $(f).elf
 
 $(f).elf: $(f).o
