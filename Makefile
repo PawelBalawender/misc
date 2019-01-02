@@ -1,4 +1,4 @@
-f = call_arm_from_thumb
+f = qsort
 all: $(f).elf
 
 $(f).elf: $(f).o
