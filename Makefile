@@ -1,4 +1,4 @@
-f = matmul
+f = div_14
 all: $(f).elf
 
 $(f).elf: $(f).o
