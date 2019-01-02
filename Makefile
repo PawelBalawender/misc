@@ -1,4 +1,4 @@
-f = factorial
+f = calc_better_loop
 all: $(f).elf
 
 $(f).elf: $(f).o
