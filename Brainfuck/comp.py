@@ -20,7 +20,7 @@ with open('libbf.s') as doc:
 
 code += '.globl main\n'
 code += 'main:\n'
-code += 'mov r0, arr_addr\n'
+code += 'ldr r0, arr_addr\n'
 
 for cmd in src:
     if cmd in '[]':
