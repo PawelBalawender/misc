@@ -1,4 +1,4 @@
-f = qsort
+f = read_write_syscalls
 all: $(f).elf
 
 $(f).elf: $(f).o
