@@ -20,6 +20,7 @@ with open('libbf.s') as doc:
 
 code += '.globl main\n'
 code += 'main:\n'
+code += 'push {r4, lr}\n'
 code += 'ldr r0, arr_addr\n'
 
 for cmd in src:
@@ -27,6 +28,9 @@ for cmd in src:
         continue
 
     code += trans[cmd]
+
+code += 'pop {r4, lr}\n'
+code += 'bx lr\n'
 
 with open('_out.s', 'w') as doc:
     doc.write(code)
