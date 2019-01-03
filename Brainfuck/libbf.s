@@ -33,25 +33,6 @@ gets:
 	swi #0
 
 	pop {r0, r4, r7, lr}
-	bx lr
-
-inc:
-	/* r0: &arr */
-	ldrb r1, [r0]
-	add r1, r1, #1
-	strb r1, [r0]
-
-dec:
-	/* r0: &arr */
-	ldrb r1, [r0]
-	sub r1, r1, #1
-	strb r1, [r0]
-
-inc_pntr:
-	add r0, r0, #1
-
-dec_pntr:
-	sub r0, r0, #1
 
 arr_addr: .word arr
 
