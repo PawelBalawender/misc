@@ -10,7 +10,7 @@ trans = {
         ',': 'bl gets\n',
         }
 
-with open('naive_hello.b') as doc:
+with open('HelloWorld.b') as doc:
     src = doc.read()
 
 src = ''.join(i for i in src if i in cmds)
@@ -23,8 +23,23 @@ code += 'main:\n'
 code += 'push {r4, lr}\n'
 code += 'ldr r0, arr_addr\n'
 
+loop_counter = 0
+loop_stack = []
+
 for cmd in src:
-    if cmd in '[]':
+    if cmd == '[':
+        loop_counter += 1
+        code += 'b _loop_cond_{}\n'.format(loop_counter)
+        code += '_loop_{}:\n'.format(loop_counter)
+        loop_stack.append(loop_counter)
+        continue
+    elif cmd ==']':
+        ending = loop_stack.pop()
+        code += 'b _loop_cond_{}\n'.format(ending)
+        code += '_loop_cond_{}:\n'.format(ending)
+        code += 'ldr r1, [r0]\n'
+        code += 'cmp r1, #0\n'
+        code += 'bne _loop_{}\n'.format(ending)
         continue
 
     code += trans[cmd]
