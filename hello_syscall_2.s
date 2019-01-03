@@ -22,4 +22,3 @@ main:
 	bx lr
 
 msg_addr: .word msg
-
