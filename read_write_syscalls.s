@@ -12,7 +12,7 @@ after:
 
 main:
 	push {r4, lr}
-	ldr r0, arr_addr;
+	ldr r0, arr_addr
 
 	bl gets
 	bl puts
