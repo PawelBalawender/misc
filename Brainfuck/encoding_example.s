@@ -1,6 +1,15 @@
 .text
 .globl main
 main:
+	push {r0, r4, lr, pc}
+	pop {r0, r4, lr, pc}
+	push {r4, pc}
+	pop {r4, pc}
+	ldr r0, [r0]
+	ldr r1, [r0]
+	str r1, [r0]
+	str r0, [r0]
+
 	/* 1101 */
 	mov r0, #0
 	mov r0, #127

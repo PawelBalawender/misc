@@ -1,4 +1,4 @@
-f = _out
+f = encoding_example
 all: $(f).elf
 
 $(f).elf: $(f).o
