@@ -9,7 +9,7 @@ trans = {
         '<': '\tsub r0, r0, #1\n',
         '.': '\tbl puts\n',
         ',': '\tbl gets\n',
-        '[': 'loop_{i}:\n\tldr r1, [r0]\n\tcmp r1, #0\n\tbeq end_{i}\n',
+        '[': 'loop_{i}:\n\tldrb r1, [r0]\n\tcmp r1, #0\n\tbeq end_{i}\n',
         ']': '\tb loop_{i}\nend_{i}:\n\t'
         }
 
