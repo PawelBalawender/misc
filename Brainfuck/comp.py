@@ -32,17 +32,19 @@ code += '\tpush {r4, lr}\n'
 code += '\tldr r0, arr_addr\n'
 
 loop_counter = 0
+loop_stack = []
 
 for cmd in src:
     if cmd == '[':
         loop_counter += 1
-        code += trans[cmd].format(i=loop_counter)
+        loop_stack.append(loop_counter)
+        code += trans[cmd].format(i=loop_stack[-1])
         continue
     elif cmd == ']':
-        code += trans[cmd].format(i=loop_counter)
-        loop_counter -= 1
+        code += trans[cmd].format(i=loop_stack[-1])
+        loop_stack.pop()
         continue
-    code += trans[cmd].replace('\t', '\t' * (loop_counter + 1))
+    code += trans[cmd]
 
 code += '\tpop {r4, lr}\n\tbx lr\n'
 
