@@ -46,7 +46,9 @@ for cmd in src:
         continue
     code += trans[cmd]
 
-code += '\tpop {r4, lr}\n\tbx lr\n'
+# syscall #1: exit()
+code += '\tpop {r4, lr}\n\tmov r7, #1\n\tswi #0\n'
+#code += '\tpop {r4, lr}\n\tbx lr\n'
 
 with open('_out.s', 'w') as doc:
     doc.write(code)
