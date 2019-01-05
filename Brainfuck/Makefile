@@ -1,4 +1,4 @@
-f = print_a_simple
+f = _out
 all: $(f).elf
 
 $(f).elf: $(f).o
