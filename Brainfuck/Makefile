@@ -2,7 +2,7 @@ f = _out
 all: $(f).elf
 
 $(f).elf: $(f).o
-	gcc -ggdb -o $@ $+
+	ld -o $@ $+ -emain
 
 $(f).o: $(f).s
 	as -ggdb -mfpu=vfpv2 -o $@ $<
