@@ -9,8 +9,8 @@ trans = {
         '<': '\tsub r0, r0, #1\n',
         '.': '\tbl puts\n',
         ',': '\tbl gets\n',
-        '[': '\tb check_loop_{i}\n\tloop_{i}:\n',
-        ']': '\t\tb check_loop_{i}\n\tcheck_loop_{i}:\n\t\tldr r1, [r0]\n\t\tcbnz r1, loop_{i}\n'
+        '[': 'loop_{i}:\n\tldr r1, [r0]\n\tcmp r1, #0\n\tbeq end_{i}\n',
+        ']': '\tb loop_{i}\nend_{i}:\n\t'
         }
 
 try:
@@ -39,8 +39,8 @@ for cmd in src:
         code += trans[cmd].format(i=loop_counter)
         continue
     elif cmd == ']':
-        loop_counter -= 1
         code += trans[cmd].format(i=loop_counter)
+        loop_counter -= 1
         continue
     code += trans[cmd].replace('\t', '\t' * (loop_counter + 1))
 
