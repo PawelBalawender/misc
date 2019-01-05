@@ -1,16 +1,24 @@
 #!/usr/bin/env python3
+import sys
 
 cmds = '+-><.,[]'
 trans = {
-        '+': 'ldrb r1, [r0]\nadd r1, r1, #1\nstrb r1, [r0]\n',
-        '-': 'ldrb r1, [r0]\nsub r1, r1, #1\nstrb r1, [r0]\n',
-        '>': 'add r0, r0, #1\n',
-        '<': 'sub r0, r0, #1\n',
-        '.': 'bl puts\n',
-        ',': 'bl gets\n',
+        '+': '\tldrb r1, [r0]\n\tadd r1, r1, #1\n\tstrb r1, [r0]\n',
+        '-': '\tldrb r1, [r0]\n\tsub r1, r1, #1\n\tstrb r1, [r0]\n',
+        '>': '\tadd r0, r0, #1\n',
+        '<': '\tsub r0, r0, #1\n',
+        '.': '\tbl puts\n',
+        ',': '\tbl gets\n',
+        '[': '\tb check_loop_{i}\n\tloop_{i}:\n',
+        ']': '\t\tb check_loop_{i}\n\tcheck_loop_{i}:\n\t\tldr r1, [r0]\n\t\tcbnz r1, loop_{i}\n'
         }
 
-with open('HelloWorld.b') as doc:
+try:
+    filename = sys.argv[1]
+except IndexError:
+    filename = 'HelloWorld.b'
+
+with open(filename) as doc:
     src = doc.read()
 
 src = ''.join(i for i in src if i in cmds)
@@ -20,32 +28,23 @@ with open('libbf.s') as doc:
 
 code += '.globl main\n'
 code += 'main:\n'
-code += 'push {r4, lr}\n'
-code += 'ldr r0, arr_addr\n'
+code += '\tpush {r4, lr}\n'
+code += '\tldr r0, arr_addr\n'
 
 loop_counter = 0
-loop_stack = []
 
 for cmd in src:
     if cmd == '[':
         loop_counter += 1
-        code += 'b _loop_cond_{}\n'.format(loop_counter)
-        code += '_loop_{}:\n'.format(loop_counter)
-        loop_stack.append(loop_counter)
+        code += trans[cmd].format(i=loop_counter)
         continue
-    elif cmd ==']':
-        ending = loop_stack.pop()
-        code += 'b _loop_cond_{}\n'.format(ending)
-        code += '_loop_cond_{}:\n'.format(ending)
-        code += 'ldr r1, [r0]\n'
-        code += 'cmp r1, #0\n'
-        code += 'bne _loop_{}\n'.format(ending)
+    elif cmd == ']':
+        loop_counter -= 1
+        code += trans[cmd].format(i=loop_counter)
         continue
+    code += trans[cmd].replace('\t', '\t' * (loop_counter + 1))
 
-    code += trans[cmd]
-
-code += 'pop {r4, lr}\n'
-code += 'bx lr\n'
+code += '\tpop {r4, lr}\n\tbx lr\n'
 
 with open('_out.s', 'w') as doc:
     doc.write(code)

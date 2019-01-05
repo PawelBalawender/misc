@@ -9,3 +9,9 @@ $(f).o: $(f).s
 
 clean:
 	rm -vf *.o *.out *.elf
+
+exam:
+	./comp.py print_a.b
+	make
+	vim _out.s
+
