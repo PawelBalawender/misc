@@ -40,7 +40,7 @@ class LowLevel:
         return encoded
 
     def stmdb(cond, w, rn, reglist):
-        return (cond << 28) | (0x9 << 24) | (w << 21) (rn << 16) | reglist
+        return (cond << 28) | (0x9 << 24) | (w << 21) | (rn << 16) | reglist
 
 
 class Abstractions:
@@ -51,7 +51,7 @@ class Abstractions:
         return LowLevel.bl(ALWAYS, addr)
 
     def bx(reg):
-        return LowLevel.bl(ALWAYS, reg)
+        return LowLevel.bx(ALWAYS, reg)
 
     def swi(comment):
         return LowLevel.svc(ALWAYS, comment)
@@ -62,7 +62,7 @@ class Abstractions:
 
     def mov_imm(dest, imm):
         # todo: handle numbers bigger than 31
-        imm12 = source << 7
+        imm12 = imm
         return LowLevel.mov(ALWAYS, i=1, s=0, rd=dest, imm12=imm12)
 
     def ldr_reg(dest_reg, addr_reg):
@@ -156,45 +156,37 @@ class Abstractions:
         return LowLevel.load_store(**args)
 
     def pop(*regs):
-        reglist = 1
+        reglist = 0
         for i in regs: reglist |= (1 << i)
-        return LowLevel.ldmia(ALWAYS, w=0, rn=SP, reglist=reglist)
+        return LowLevel.ldmia(ALWAYS, w=1, rn=SP, reglist=reglist)
 
-def imm12(imm5, typ, rm):
-    return (imm5 << 7) | (typ << 5) | rm
+    def push(*regs):
+        reglist = 0
+        for i in regs: reglist |= (1 << i)
+        return LowLevel.stmdb(ALWAYS, w=1, rn=SP, reglist=reglist)
 
 
-def reglist_to_bin(*regs):
-    res = 0
-    for i in regs:
-        regs |= 1 << i
-    return regs
+if __name__ == '__main__':
+    try:
+        filename = sys.argv[1]
+    except IndexError:
+        filename = 'hello.s'
 
-try:
-    filename = sys.argv[1]
-except IndexError:
-    filename = 'hello.s'
+    with open(filename) as doc:
+        asm = doc.read()
 
-ops = {
-        'b': b,
-        'bx': bx,
-        'bl': bl,
-        'swi': swi,
-        'mov': mov,
-        'ldr': ldr,
-        'str': strx,
-        'ldrb': ldrb,
-        'strb': strb,
-        'push': push,
-        'pop': pop,
-        }
+    # 1. resolve references, .data section, .set and .word directives
 
-with open(filename) as doc:
-    while not 'main:' in doc.readline():
-        continue
-
-    for line in doc.readlines():
-        tokens = line.split()
-        tokens = [''.join(c for c in x if c.isalpha() or c.isdigit()) for x in tokens]
-        print(ops[tokens[0]](tokens[1:]))
-
+    a = Abstractions
+    x = [
+            a.push(7, LR),
+            a.mov_imm(0, 1),
+            a.mov_imm(2, 15),
+            a.mov_imm(7, 4),
+            a.swi(0),
+            a.mov_imm(0, 0),
+            a.pop(7, LR),
+            a.bx(LR)
+            ]
+    for i in x:
+        print(hex(i))
