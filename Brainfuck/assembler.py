@@ -3,9 +3,11 @@
 
 import sys
 
-sp = 13
-lr = 14
-pc = 15
+
+SP = 13
+LR = 14
+PC = 15
+ALWAYS = 0b1110
 
 
 class LowLevel:
@@ -32,8 +34,13 @@ class LowLevel:
         encoded |= (rn << 16) | (rt << 12) | imm12
         return encoded
 
+    def ldmia(cond, w, rn, reglist):
+        encoded = (cond << 28) | (0x8 << 24) | (0b10 << 22) | (w << 21)
+        encoded |= (1 << 20) | (rn << 16) | reglist
+        return encoded
 
-ALWAYS = 0b1110
+    def stmdb(cond, w, rn, reglist):
+        return (cond << 28) | (0x9 << 24) | (w << 21) (rn << 16) | reglist
 
 
 class Abstractions:
@@ -50,7 +57,108 @@ class Abstractions:
         return LowLevel.svc(ALWAYS, comment)
 
     def mov_reg(dest, source):
-        return LowLevel.mov()
+        imm12 = source << 7
+        return LowLevel.mov(ALWAYS, i=0, s=0, rd=dest, imm12=imm12)
+
+    def mov_imm(dest, imm):
+        # todo: handle numbers bigger than 31
+        imm12 = source << 7
+        return LowLevel.mov(ALWAYS, i=1, s=0, rd=dest, imm12=imm12)
+
+    def ldr_reg(dest_reg, addr_reg):
+        args = {
+                'cond': ALWAYS,
+                'i': 0,
+                'p': 1,
+                'u': 1,
+                'size': 1,
+                'w': 0,
+                'ls': 1,
+                'rn': addr_reg,
+                'rt': dest_reg,
+                'imm12': 0,
+                }
+        return LowLevel.load_store(**args)
+
+    def ldr_imm(dest_reg, addr):
+        args = {
+                'cond': ALWAYS,
+                'i': 1,
+                'p': 1,
+                'u': 1,
+                'size': 1,
+                'w': 0,
+                'ls': 1,
+                'rn': 0,
+                'rt': dest_reg,
+                'imm12': addr,
+                }
+        return LowLevel.load_store(**args)
+
+    def ldrb_reg(dest_reg, addr_reg):
+        args = {
+                'cond': ALWAYS,
+                'i': 0,
+                'p': 1,
+                'u': 1,
+                'size': 0,
+                'w': 0,
+                'ls': 1,
+                'rn': addr_reg,
+                'rt': dest_reg,
+                'imm12': 0,
+                }
+        return LowLevel.load_store(**args)
+
+    def ldrb_imm(dest_reg, addr):
+        args = {
+                'cond': ALWAYS,
+                'i': 1,
+                'p': 1,
+                'u': 1,
+                'size': 0,
+                'w': 0,
+                'ls': 1,
+                'rn': 0,
+                'rt': dest_reg,
+                'imm12': addr,
+                }
+        return LowLevel.load_store(**args)
+
+    def str_reg(sorce_reg, addr_reg):
+        args = {
+                'cond': ALWAYS,
+                'i': 0,
+                'p': 1,
+                'u': 1,
+                'size': 1,
+                'w': 0,
+                'ls': 0,
+                'rn': addr_reg,
+                'rt': source_reg,
+                'imm12': 0,
+                }
+        return LowLevel.load_store(**args)
+
+    def strb_reg(sorce_reg, addr_reg):
+        args = {
+                'cond': ALWAYS,
+                'i': 0,
+                'p': 1,
+                'u': 1,
+                'size': 0,
+                'w': 0,
+                'ls': 0,
+                'rn': addr_reg,
+                'rt': source_reg,
+                'imm12': 0,
+                }
+        return LowLevel.load_store(**args)
+
+    def pop(*regs):
+        reglist = 1
+        for i in regs: reglist |= (1 << i)
+        return LowLevel.ldmia(ALWAYS, w=0, rn=SP, reglist=reglist)
 
 def imm12(imm5, typ, rm):
     return (imm5 << 7) | (typ << 5) | rm
