@@ -15,3 +15,7 @@ exam:
 	make
 	vim _out.s
 
+attr:
+	make
+	objcopy --dump-section .ARM.attributes=.ARM.attributes.o $(f).elf
+
