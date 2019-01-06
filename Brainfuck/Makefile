@@ -5,10 +5,10 @@ $(f).elf: $(f).o
 	ld -o $@ $+ -emain
 
 $(f).o: $(f).s
-	as -ggdb -mfpu=vfpv2 -o $@ $<
+	as -o $@ $<
 
 clean:
-	rm -vf *.o *.out *.elf
+	rm -vf *.o *.out *.elf _out.s
 
 exam:
 	./comp.py print_a.b
