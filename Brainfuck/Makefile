@@ -1,4 +1,4 @@
-f = encoding_example
+f = hello
 all: $(f).elf
 
 $(f).elf: $(f).o
