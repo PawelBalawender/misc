@@ -12,6 +12,9 @@ main:
 
 	/* 1101 */
 	mov r0, #0
+	mov r0, r0
+	mov r0, r1
+	mov r1, r0
 	mov r0, #127
 	mov r0, #128
 	mov r1, #0
