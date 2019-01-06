@@ -65,18 +65,18 @@ class Abstractions:
         imm12 = imm
         return LowLevel.mov(ALWAYS, i=1, s=0, rd=dest, imm12=imm12)
 
-    def ldr_reg(dest_reg, addr_reg):
+    def ldr_reg(dest_reg, base_reg, off):
         args = {
                 'cond': ALWAYS,
                 'i': 0,
                 'p': 1,
-                'u': 1,
-                'size': 1,
+                'u': (off > 0),
+                'size': 0,
                 'w': 0,
                 'ls': 1,
-                'rn': addr_reg,
+                'rn': base_reg,
                 'rt': dest_reg,
-                'imm12': 0,
+                'imm12': abs(off),
                 }
         return LowLevel.load_store(**args)
 
@@ -179,6 +179,7 @@ if __name__ == '__main__':
 
     a = Abstractions
     x = [
+            a.ldr_reg(1, 15, 20),
             a.push(7, LR),
             a.mov_imm(0, 1),
             a.mov_imm(2, 15),
@@ -190,3 +191,4 @@ if __name__ == '__main__':
             ]
     for i in x:
         print(hex(i))
+
