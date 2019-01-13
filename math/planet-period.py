@@ -56,6 +56,8 @@ avg_periods = [
         sum(periods[0]) / len(periods[0]),
         sum(periods[1]) / len(periods[1]),
         ]
+# to days
+avg_periods = [i / (3600 * 24) for i in avg_periods]
 
 # find avg duration of eclipses
 full_times = [0, 0]
@@ -63,4 +65,17 @@ for i, ecl in enumerate(ecls):
     full_times[i] = sum((chunk[-1]-chunk[0]).total_seconds() for chunk in ecl)
 avg_durations = [full_times[0] / len(ecls[0]), full_times[1] / len(ecls[1])]
 
-print(avg_durations)
+# find avg brightness fluctuation
+flux = []
+flux.append([val for (dt, val) in data['Gwiazda 1'].items() if val < 0.985])
+flux.append([val for (dt, val) in data['Gwiazda 3'].items() if val < 0.990])
+avg_flux = sum(flux[0]) / len(flux[0]), sum(flux[1]) / len(flux[1])
+avg_flux = [1-i for i in avg_flux]
+
+# find planet sizes
+star_radii = 772227, 150271  # km
+planet_radii = [rad*(flx**0.5) for (rad, flx) in zip(star_radii, avg_flux)]
+
+print('Planet radii in km:', *planet_radii)
+print('Plant period in days:', *avg_periods)
+
