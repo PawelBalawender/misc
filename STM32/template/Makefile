@@ -20,8 +20,8 @@ STARTUP_OBJ = $(DEST)/startup_stm32f091xc.o
 $(DEST)/main.hex: $(DEST)/main.elf
 	objcopy -Oihex $(DEST)/main.elf $(DEST)/main.hex
 
-$(DEST)/main.elf: $(OBJS)
-	$(CC) $(LINK_FLAGS) $(STARTUP_OBJ) $^ -o $@
+$(DEST)/main.elf: $(OBJS) $(STARTUP_OBJ)
+	$(CC) $(LINK_FLAGS) $^ -o $@
 
 $(STARTUP_OBJ): $(STARTUP_SRC)
 	$(CC) $(COMP_FLAGS) $< -o $@
