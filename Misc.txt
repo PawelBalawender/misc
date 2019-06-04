@@ -1,0 +1,119 @@
+﻿Games:
+	Crazy Machines
+	Oregon Trail
+	While true: learn()
+	TIS-100
+
+Blog about creativity: http://klosinski.net/
+
+Really miscellaneous:
+	My STM32: STM32 NUCLEO-F091RC, ARM Cortex M0
+	XD: http://i.ytimg.com/vi/4SQWfu8fIAQ/maxresdefault.jpg
+	Artist: https://f1x-2.deviantart.com/art/Future-513681220
+		and one work: https://f1x-2.deviantart.com/art/Future-513681220
+	Comparison methods: https://beta.observablehq.com/@mbostock/methods-of-comparison-compared
+	Student exchange Magdeburg photos: https://drive.google.com/drive/folders/11r99WOxF-VWfYEcRPZ1gcEgPqz4E0MHD
+	Best UX: http://drones.pitchinteractive.com/
+	Emotions' map: http://unspeakableness.net/visualization/Parrott_Model_b.png
+	Illustrating mathematics using 3D printer: https://arxiv.org/pdf/1306.5599v1.pdf
+	About reading: Spritz
+	Infographics: Kissmetrics
+	Atari music band: http://grayscale.scene.pl/msx_archive.php?lang=en
+	Survival event: EdycjaExpress
+	How big is the space?: http://www.bbc.com/future/story/20120321-how-big-is-space
+	How to get likes?: https://blog.kissmetrics.com/wp-content/uploads/2013/06/how-to-get-more-likes-on-fb-lg.png
+	How to make PowerPoint presentations?: http://www.cedma-europe.org/newsletter%20articles/WorkplaceXpert/Show%20Me%20-%20What%20Brain%20Research%20Says%20About%20Visuals%20in%20PowerPoint%20(Jul%2008).pdf
+	How to learn?: https://books.google.pl/books?id=AOJKGTWEcKEC&pg=PA98&lpg=PA98&dq=brain+filter+99%25+of+data&source=bl&ots=t5o3JqdL5W&sig=fANbAp-SbqL3TZ41GoFvUxPzWCQ&hl=pl&sa=X&ved=0ahUKEwiPwK_T-NTYAhVI_ywKHYN8ASoQ6AEISjAJ#v=onepage&q&f=false
+	Insane actor: http://www.filmweb.pl/person/Fred+Astaire-44703
+	Carrier in IT: https://marketingibiznes.pl/it/kompendium-it-jak-zaczac-rozwijac-kariere-programisty/
+
+AoE strategies: http://artho.com/age/strats.html
+NXT motors control [TUT]: http://www.mindstorms.rwth-aachen.de/documents/downloads/doc/version-4.03/motor_control.html
+Colors: http://colours.neilorangepeel.com/
+
+Solving puzzle: http://norvig.com/sudoku.html
+Dev sites:
+	tech.io
+	codingame.com
+Bash: https://goalkicker.com/BashBook/
+Vim:
+https://www.reddit.com/r/vim/wiki/index
+https://www.vi-improved.org/recommendations/?fbclid=IwAR2gaE7FKArjCPugA5ugVQhpS2C4Mgu5xgH-OluDpfmTmZ3tUnRJJqpr_as
+https://www.vi-improved.org/vim-proverbs/?fbclid=IwAR1KgIomfpz-n2IEcbDmIvnS96fdoQQv6jSY2TFOTdVglWGUqm1Wkr_P3Ac
+https://github.com/romainl/idiomatic-vimrc?fbclid=IwAR1nF4BgoKqMV058AiLjsCZZHXZT0m5o-cRoN2did5dQlq_dLTLtnU4OCIM
+
+Github zioma co wygrał IOI: https://github.com/bqi343
+Build your X: https://github.com/danistefanovic/build-your-own-x#build-your-own-operating-system
+C coroutines: https://www.chiark.greenend.org.uk/~sgtatham/coroutines.html
+Reentrant functions in signal handling https://www.ibm.com/developerworks/linux/library/l-reent/index.html#N101CA
+C spec http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf
+Mem allocator: http://g.oswego.edu/dl/html/malloc.html
+Bit twiddling hacks:
+	http://graphics.stanford.edu/~seander/bithacks.html
+	http://graphics.stanford.edu/~seander/bithacks.html#ZerosOnRightLinear
+	https://homolog.us/blogs/bioinfo/2014/12/04/the-entire-world-of-bit-twiddling-hacks/
+Bash tricks: http://www.etalabs.net/sh_tricks.html
+
+Low level:
+	Radiation hardened software: https://ti.arc.nasa.gov/m/pub-archive/1075h/1075%20(Mehlitz).pdf
+	
+	Scheduling comparison:
+	https://pdfs.semanticscholar.org/2cc5/be29b3a4eb8cd75ba0f0fec9df502f83c6f6.pdf
+	https://pdfs.semanticscholar.org/7b37/faaa44f1db1f9eeddd4e09952aa12eb4b79a.pdf
+	http://research.cs.queensu.ca/home/akl/techreports/scheduling.pdf
+	
+	ARM ASM for RPI:
+		https://thinkingeek.com/arm-assembler-raspberry-pi/
+		https://github.com/rofirrim/raspberry-pi-assembler/blob/master/chapter24/trampoline-sort-array.s
+		task sched: https://github.com/adamheinrich
+	RPI bare metal: http://www.valvers.com/open-software/raspberry-pi/step01-bare-metal-programming-in-cpt1/
+	
+	cmsis core https://arm-software.github.io/CMSIS_5/Core/html/index.html
+	arm abi, eabi https://stackoverflow.com/questions/8060174/what-are-the-purposes-of-the-arm-abi-and-eabi
+	sd card for uc: https://openlabpro.com/guide/interfacing-microcontrollers-with-sd-card/
+	sd+fatfs: https://www.avrfreaks.net/forum/tut-c-getting-sdmmc-card-working-painlessly-fatfs
+	
+	Compilers:
+		interpretets: http://craftinginterpreters.com/?fbclid=IwAR2byRjA-s8p6G3FBEib8g-ocL9DfYSfB7MTnGX-8fwW2CSSkamlZt_fFX8
+		linkers: https://lwn.net/Articles/276782/
+		tiny gcc frontend: https://thinkingeek.com/tag/tiny/
+
+Hardware:
+	diy sound card for rpi: https://www.youtube.com/watch?v=_ydCZM4lRVM
+		
+	
+C++:
+	Style: https://google.github.io/styleguide/cppguide.html
+	Bug: Nie znaleziono punktu wejścia procedury __gxx_personality_v0 w bibliotece C:\...\Desktop\stack.exe
+		Place in the working directory library libstdc++-6.dll
+	Assertion at compile time: https://stackoverflow.com/questions/9229601/what-is-in-c-code?rq=1
+
+
+Python:
+	Install pip when nothing works: python -m ensurepip
+	Coroutines, generators, lots of code: http://www.dabeaz.com/coroutines/index.html
+	CLI: docopt.org
+	Sound processing: http://samcarcagno.altervista.org/blog/basic-sound-processing-python/?doing_wp_cron=1529265566.4620890617370605468750
+	FFT: https://stackoverflow.com/questions/604453/analyze-audio-using-fast-fourier-transform
+	2 vs 3: http://sebastianraschka.com/Articles/2014_python_2_3_key_diff.html
+	Anti-patterns: https://docs.quantifiedcode.com/python-anti-patterns/index.html
+	get, getattr etc.: https://stackoverflow.com/questions/9048826/what-are-the-differences-amongst-pythons-get-and-del-methods
+	Daemon threads are harmful: https://joeshaw.org/python-daemon-threads-considered-harmful/
+	Facebook Messages Scraper: https://github.com/Hagmar/FBMS
+	Facebook Messages Counter: https://github.com/Sunil02324/Facebook-Messages-Counter/blob/master/messages%20count%20of%20thread.py
+
+Threading:
+	http://chriskiehl.com/article/parallelism-in-one-line/
+
+Hacking:
+	Challenges:
+		http://google-gruyere.appspot.com/
+		https://security.stackexchange.com/questions/3592/what-hacking-competitions-challenges-exist
+		https://hack.cert.pl/challenges
+	Guy that won XSSMas 2016: https://sekurak.pl/zine/sekurak-offline-4-final.pdf
+	Password cracking: http://010life.blogspot.com/2012/12/password-cracking-john-ripper-hashcat.html
+
+Batch:
+	https://www.howtogeek.com/168896/10-useful-windows-commands-you-should-know/
+
+	
