@@ -1,3 +1,4 @@
+*.geany
 *.elf
 .gdb_history
 *.e
