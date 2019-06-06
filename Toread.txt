@@ -1,0 +1,79 @@
+Paradigms: imperative, functional, object-oriented, declarative, etc.
+Flynn Taxonomy, Turing's machine
+Machine of states
+
+fizyka czastek https://ppss.ifj.edu.pl/materials_2017/wstep_dfcz_praktyki2017.pdf
+Paradigms
+cipad
+hypothesis - python lib
+zalando connexion api
+SimpleIsBetterThanComplex #django 
+podstawy teorii obwodów, jerzy osiowski, jerzt szabatin
+LBYL vs EAFP
+Abu Musab az-Zarkawi
+Linuxfromscratch.org
+matematyczny kalendarz: matematyka.poznan.pl
+hertaville.com STM32F0 GPIO tutorial
+
+Maths and analysis:
+	Piecewise Linear Regresion
+	Data binning
+	Logistic Regression
+	Decision Trees
+	Random Forest
+	Naive Bayes
+	Clustering
+	G:odel, Escher, Bach
+
+	Road to Reality Penrose'a
+
+	Fizyka dla szkol wyzszych https://d3bxy9euw4e147.cloudfront.net/oscms-prodcms/media/documents/Fizyka_dla_szko%C5%82_wyzszych_Tom_2_v2.173_img_high_quality.pdf?fbclid=IwAR2hoozxQKfJsw4Rv5Z3TAAHCy65CmchRJr0HFm5vKM8ACTocSwCWKKbbRs
+polar pioneer = travel to south pole?
+pieniadze?:
+http://www.lba.pl/dla-pomyslodawcow/podstawowe-informacje?fbclid=IwAR2byRjA-s8p6G3FBEib8g-ocL9DfYSfB7MTnGX-8fwW2CSSkamlZt_fFX8
+Krowy swinie wojny i czarownice
+Python:
+	.env files: https://github.com/theskumar/python-dotenv
+	web programmming books: https://wiki.python.org/moin/WebProgrammingBooks
+	django social auth: https://github.com/st4lk/django-rest-social-auth
+	django securiyt:
+	https://django-registration.readthedocs.io/en/3.0/security.html#security
+	https://pwned-passwords-django.readthedocs.io/en/1.2.1/
+	
+	Coroutines: await, async
+	PEP:
+		380
+		342
+		257
+	Libraries etc.: SQLAlchemy, Kite, Functools, Itertools (look: accumulate()), Logging, Scrapy,
+			PDB, Html.parser, Arrow, Tempfile, Requests, Itsdangerous, Cryptography,
+			
+Web:
+	UID, GID, SUID, SGID
+	HTTP, HTTPd, SMTP, SIP
+	MIME, POP3, INAP4, NNTP
+
+travel snetry master keys https://github.com/Xyl2k/TSA-Travel-Sentry-master-keys
+enkoder: http://jaras.com.pl/
+indian hill: http://c-faq.com/style/guides.html
+what cc for arm https://www.embeddedrelated.com/showthread/comp.arch.embedded/137215-1.php
+when array is not array https://thinkingeek.com/2015/02/26/array-array/
+it runs on java 8: https://veekaybee.github.io/2019/05/10/java8/?fbclid=IwAR2fEtka6cAcwIvuEX3P7wlF4I_ULz8hXYm7zP294BtAx6hOQLELDERTrYo
+duffs device https://en.wikipedia.org/wiki/Duff%27s_device
+hackers delight, dobra ksiazka https://www.amazon.com/Hackers-Delight-Edition-Henry-Warren/dp/0321842685
+free antiv: https://www.facebook.com/groups/cybersecawka/permalink/843717689334413/
+software engineer: https://12factor.net/
+sum floats: https://pl.wikipedia.org/wiki/Algorytm_sumacyjny_Kahana
+floats: http://cr.yp.to/2005-590/goldberg.pdf
+\call H from C: https://wiki.haskell.org/Calling_Haskell_from_C
+ssh keys https://letsencrypt.org/getting-started/
+ssl https://stackoverflow.com/questions/41278340/paid-ssl-certificate-vs-free-ssl-certificate
+fat boot sector: http://www.ntfs.com/fat-partition-sector.htm
+Inverse gamma: http://mathforum.org/kb/message.jspa?messageID=342551&tstart=0
+Algo: https://eduinf.waw.pl/inf/alg/001_search/index.php?fbclid=IwAR2_xMm3XuvzMYsy3Iglmi1ZRWyb-xy8fJG19ETD8350yDllpp33FRUPhnk
+Elektronika Praktyczna
+Miesięcznik Polska
+ctags https://andrew.stwrt.ca/posts/vim-ctags/
+Pochoden polowkowe http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.4.3874&rep=rep1&type=pdf&fbclid=IwAR0EzqEBV8eoSIKTHdsU_1CXcXBt0Q46zUYfxIcsnE-lDOfB1Vz0zKah8Hk
+Libgen.io
+Probability and Computing by Mitzenmacher and Upfal http://www.bioinfo.org.cn/~wangchao/maa/Probability_and_Computing.pdf
