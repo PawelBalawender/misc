@@ -1,0 +1,22 @@
+Software optimization
+
+https://dspguru.com/dsp/tricks/
+http://hackersdelight.org/
+https://www.jjj.de/
+http://bitmath.blogspot.com/
+https://www.agner.org/optimize/
+http://haroldbot.nl/
+http://programming.sirrida.de/
+http://homepage.divms.uiowa.edu/~jones/bcd/divide.html
+http://www.azillionmonkeys.com/qed/asmexample.html
+http://www.inwap.com/pdp10/hbaker/hakmem/hakmem.html
+http://aggregate.org/
+http://graphics.stanford.edu/~seander/bithacks.html
+
+C Programming Language
+
+C Specification 	http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf
+Malloc				http://g.oswego.edu/dl/html/malloc.html
+Signal handling		https://www.ibm.com/developerworks/linux/library/l-reent/index.html#N101CA
+Coroutines			https://www.chiark.greenend.org.uk/~sgtatham/coroutines.html
+Indian Hill			http://c-faq.com/style/guides.html

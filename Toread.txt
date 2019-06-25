@@ -2,42 +2,69 @@ Paradigms: imperative, functional, object-oriented, declarative, etc.
 Flynn Taxonomy, Turing's machine
 Machine of states
 
-Largo con gravita
-Daas (film)
-Czlowiek i bledy ewolucji
-Ludzie, kornika tego wszystkeigo co zesmy spieprzyli
-Rozmowy ze starymi ludzmi, autor na L
-ror queue
-o1 task scheduler
-fideloper.com
-odblokowac excela od st
-odblokowac muzyke ze spotify
-django-axes
-djangos orm better
-external ahb-lite interface
-debug access port
-debug by swd
-systemy operacyjne na kpmuterach kwantowychj
-1==2 w pythoinie
-Nie mozna zamienic losowego ruchu w efektywna prace, ale czy mozna
-wyciagnac pozytecnze informacje z losowych?
-Henris z lozyskiem, duze diabolo
-Guinol w tarapatach
-Semafor
-Krauze
-Uwaga diabel 1959
-Kineformy
-Tu i tam 1957
-Siergiej obrazcw
-Wajda generacja
-Ida kaminska
-The polish review
-Miesiecnzik Polska
-Eusytatchy kossakowski
-Zofia rydet
-Inwestycje: ar, vr, iot, mosa meat, memphis meats, supermeat, finless foods
-Principia matheamtica
-Stukeyel biografia newtona
+arm opcode map
+http://imrannazar.com/ARM-Opcode-Map
+
+secret book of knowledge
+https://github.com/trimstray/the-book-of-secret-knowledge
+
+emulator x86
+https://github.com/copy/v86
+
+slynny fizyczny obiekt
+https://en.wikipedia.org/wiki/Lorenz_system
+
+wazna strona do hackowania
+https://www.nomoreransom.org/
+
+dobry blog
+http://mrjester.hapisan.com/04_MC68/
+
+artykuły bardzo porządne:
+http://www.micromouseonline.com/2012/03/29/stm32-reset-source/
+http://www.micromouseonline.com/2010/09/05/tools-logic-and-protocol-analyzers/
+http://www.micromouseonline.com/2009/05/26/nokia-3410-lcd-on-the-stm32/
+http://www.micromouseonline.com/2011/11/05/stlink-swd-for-stm32/
+
+jump to bootloader stm32
+https://stackoverflow.com/questions/28288453/how-do-you-jump-to-the-bootloader-dfu-mode-in-software-on-the-stm32-f072
+
+ciekawy projekt
+https://github.com/kazigk/dowhy
+
+.onion
+https://github.com/kazigk/onion_gateway
+
+c++ blog
+http://www.fluentcpp.com/?fbclid=IwAR0EEZuGvAwWvPg96MOGEnA31S7_51WWya4VsoNP0WTB-RuIdJHdxDb10dY
+
+biblia hackerów
+https://www.alchemistowl.org/pocorgtfo/
+
+bare metal, serio:
+https://electronics.stackexchange.com/questions/224618/minimal-code-required-to-startup-a-stm32f4
+https://electronics.stackexchange.com/questions/30736/stm32f2-makefile-linker-script-and-start-up-file-combination-without-commercia
+https://jacobmossberg.se/posts/2018/08/11/run-c-program-bare-metal-on-arm-cortex-m3.html
+https://www.elektroda.pl/rtvforum/topic2132209.html
+
+artykuł jakiś fajny
+https://www.kwantowo.pl/2017/09/03/filozofia-to-nie-nauka-filozof-to-nie-naukowiec/?fbclid=IwAR33oz9EYI-CR0fVxRd_K9OBHHHSKYNzlpMyyVHTBha5sZA56DdyobLgCi0
+w ogóle zajebisty blog: kwantowo.pl
+
+breaking spotify drm
+http://moyix.blogspot.com/2014/07/breaking-spotify-drm-with-panda.html
+https://www.usenix.org/system/files/conference/usenixsecurity13/sec13-paper_wang_3.pdf
+
+historia, polecane od funduszu:
+	Zapomniana rewolucja, Lucio Russo
+	III tom filozofii starożytnej Reale
+	Diogenes Laertios
+	Hellada królów, Świderkówna
+	Hellenika, Świderkówna
+	Chciwość, Marta Guzowska
+	Hoplita grecki 480-323 przed Chr.
+	http://cejsh.icm.edu.pl/cejsh/element/bwmeta1.element.ea07d47c-3a0e-348c-aca3-995f8757b119/c/Meander_t._60.2_13-J.Kijowski.pdf?fbclid=IwAR3nhqHUU02aeYRL3NBu14pTkBiKsWV90s9DUW6EPNKw-o1EfDgngGp50yk
+	
 fizyka czastek https://ppss.ifj.edu.pl/materials_2017/wstep_dfcz_praktyki2017.pdf
 Paradigms
 cipad
@@ -91,7 +118,6 @@ Web:
 
 travel snetry master keys https://github.com/Xyl2k/TSA-Travel-Sentry-master-keys
 enkoder: http://jaras.com.pl/
-indian hill: http://c-faq.com/style/guides.html
 what cc for arm https://www.embeddedrelated.com/showthread/comp.arch.embedded/137215-1.php
 when array is not array https://thinkingeek.com/2015/02/26/array-array/
 it runs on java 8: https://veekaybee.github.io/2019/05/10/java8/?fbclid=IwAR2fEtka6cAcwIvuEX3P7wlF4I_ULz8hXYm7zP294BtAx6hOQLELDERTrYo

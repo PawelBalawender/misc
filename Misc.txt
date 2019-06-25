@@ -5,28 +5,14 @@
 	TIS-100
 
 Blog about creativity: http://klosinski.net/
-
-Really miscellaneous:
-	My STM32: STM32 NUCLEO-F091RC, ARM Cortex M0
-	XD: http://i.ytimg.com/vi/4SQWfu8fIAQ/maxresdefault.jpg
 	Artist: https://f1x-2.deviantart.com/art/Future-513681220
 		and one work: https://f1x-2.deviantart.com/art/Future-513681220
-	Comparison methods: https://beta.observablehq.com/@mbostock/methods-of-comparison-compared
 	Student exchange Magdeburg photos: https://drive.google.com/drive/folders/11r99WOxF-VWfYEcRPZ1gcEgPqz4E0MHD
 	Best UX: http://drones.pitchinteractive.com/
 	Emotions' map: http://unspeakableness.net/visualization/Parrott_Model_b.png
-	Illustrating mathematics using 3D printer: https://arxiv.org/pdf/1306.5599v1.pdf
-	About reading: Spritz
-	Infographics: Kissmetrics
 	Atari music band: http://grayscale.scene.pl/msx_archive.php?lang=en
-	Survival event: EdycjaExpress
 	How big is the space?: http://www.bbc.com/future/story/20120321-how-big-is-space
-	How to get likes?: https://blog.kissmetrics.com/wp-content/uploads/2013/06/how-to-get-more-likes-on-fb-lg.png
-	How to make PowerPoint presentations?: http://www.cedma-europe.org/newsletter%20articles/WorkplaceXpert/Show%20Me%20-%20What%20Brain%20Research%20Says%20About%20Visuals%20in%20PowerPoint%20(Jul%2008).pdf
-	How to learn?: https://books.google.pl/books?id=AOJKGTWEcKEC&pg=PA98&lpg=PA98&dq=brain+filter+99%25+of+data&source=bl&ots=t5o3JqdL5W&sig=fANbAp-SbqL3TZ41GoFvUxPzWCQ&hl=pl&sa=X&ved=0ahUKEwiPwK_T-NTYAhVI_ywKHYN8ASoQ6AEISjAJ#v=onepage&q&f=false
-	Insane actor: http://www.filmweb.pl/person/Fred+Astaire-44703
-	Carrier in IT: https://marketingibiznes.pl/it/kompendium-it-jak-zaczac-rozwijac-kariere-programisty/
-
+	
 AoE strategies: http://artho.com/age/strats.html
 NXT motors control [TUT]: http://www.mindstorms.rwth-aachen.de/documents/downloads/doc/version-4.03/motor_control.html
 Colors: http://colours.neilorangepeel.com/
@@ -34,7 +20,6 @@ Colors: http://colours.neilorangepeel.com/
 Solving puzzle: http://norvig.com/sudoku.html
 Dev sites:
 	tech.io
-	codingame.com
 Bash: https://goalkicker.com/BashBook/
 Vim:
 https://www.reddit.com/r/vim/wiki/index
@@ -44,14 +29,7 @@ https://github.com/romainl/idiomatic-vimrc?fbclid=IwAR1nF4BgoKqMV058AiLjsCZZHXZT
 
 Github zioma co wygrał IOI: https://github.com/bqi343
 Build your X: https://github.com/danistefanovic/build-your-own-x#build-your-own-operating-system
-C coroutines: https://www.chiark.greenend.org.uk/~sgtatham/coroutines.html
-Reentrant functions in signal handling https://www.ibm.com/developerworks/linux/library/l-reent/index.html#N101CA
-C spec http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf
-Mem allocator: http://g.oswego.edu/dl/html/malloc.html
-Bit twiddling hacks:
-	http://graphics.stanford.edu/~seander/bithacks.html
-	http://graphics.stanford.edu/~seander/bithacks.html#ZerosOnRightLinear
-	https://homolog.us/blogs/bioinfo/2014/12/04/the-entire-world-of-bit-twiddling-hacks/
+
 Bash tricks: http://www.etalabs.net/sh_tricks.html
 
 Low level:
